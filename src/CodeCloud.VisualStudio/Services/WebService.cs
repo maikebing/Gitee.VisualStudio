@@ -89,7 +89,8 @@ namespace CodeCloud.VisualStudio.Services
             var request = GetRequest("https://git.oschina.net/api/v3/session");
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
-            var bytes = Encoding.UTF8.GetBytes(string.Format(CultureInfo.InvariantCulture, "email={0}&password={1}", email, password));
+            var content = $"email={HttpUtility.UrlEncode(email)}&password={HttpUtility.UrlEncode(password)}";
+            var bytes = Encoding.UTF8.GetBytes(content);
             request.ContentLength = bytes.Length;
             request.GetRequestStream().Write(bytes, 0, bytes.Length);
 

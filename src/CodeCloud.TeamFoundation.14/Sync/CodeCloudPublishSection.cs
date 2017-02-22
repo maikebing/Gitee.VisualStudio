@@ -20,11 +20,10 @@ namespace CodeCloud.TeamFoundation.Sync
         private readonly IStorage _storage;
         private readonly ITeamExplorerServices _tes;
         private readonly IViewFactory _viewFactory;
-        private readonly IVisualStudioService _vs;
         private readonly IWebService _web;
 
         [ImportingConstructor]
-        public CodeCloudPublishSection(IMessenger messenger, IGitService git, IShellService shell, IStorage storage, ITeamExplorerServices tes, IViewFactory viewFactory, IVisualStudioService vs, IWebService web)
+        public CodeCloudPublishSection(IMessenger messenger, IGitService git, IShellService shell, IStorage storage, ITeamExplorerServices tes, IViewFactory viewFactory, IWebService web)
         {
             _messenger = messenger;
             _git = git;
@@ -32,7 +31,6 @@ namespace CodeCloud.TeamFoundation.Sync
             _storage = storage;
             _tes = tes;
             _viewFactory = viewFactory;
-            _vs = vs;
             _web = web;
         }
 
@@ -63,7 +61,7 @@ namespace CodeCloud.TeamFoundation.Sync
             var view = this.SectionContent as FrameworkElement;
             if (view != null)
             {
-                var temp = new PublishSectionViewModel(_messenger, _git, _shell, _storage, _tes, _viewFactory, _vs, _web);
+                var temp = new PublishSectionViewModel(_messenger, _git, _shell, _storage, _tes, _viewFactory, _web);
                 temp.Published += OnPublished;
 
                 view.DataContext = temp;

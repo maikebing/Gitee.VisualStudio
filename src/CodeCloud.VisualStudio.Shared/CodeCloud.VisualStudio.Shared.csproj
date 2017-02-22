@@ -143,7 +143,6 @@
     <Compile Include="IUIProvider.cs" />
     <Compile Include="IViewFactory.cs" />
     <Compile Include="IShellService.cs" />
-    <Compile Include="IVisualStudioService.cs" />
     <Compile Include="IWebService.cs" />
     <Compile Include="NotificationAwareObject.cs" />
     <Compile Include="..\common\SolutionInfo.cs">
