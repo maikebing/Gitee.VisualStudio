@@ -1,8 +1,13 @@
 # 码云的 Visual Studio 扩展
+
+提示 Visual Studio 2013,2015,2017 均有社区版，码云的 Visual Studio 扩展支持 2015,2017 社区版，专业版，企业版。
+
+社区版基本功能和专业版一致，前提是只能用于非商业项目和开源项目。Express 版可以用于商业项目，也可以只下载 Visual Studio C++ Build Tools ，这个可以无限制使用。
+
 ## 安装
 
-- 在[码云/CodeCloud.VisualStudio附件](https://git.oschina.net/GitGroup/CodeCloud.VisualStudio/attach_files)中下载预先编译好的vix安装文件。
-- 下载完成之后，双击运行，中间会提示关闭所有VisualStudio相关进程，按照相关提示操作即可。
+-   在[码云/CodeCloud.VisualStudio附件](https://git.oschina.net/GitGroup/CodeCloud.VisualStudio/attach_files)中下载预先编译好的vix安装文件。
+-   下载完成之后，双击运行，中间会提示关闭所有VisualStudio相关进程，按照相关提示操作即可。
 
 注：CodeCloud.VisualStudio只支持VisualStudio 2015/2017。稳定之后，将会发布到VisualStudio市场，安装就简单了。
 
