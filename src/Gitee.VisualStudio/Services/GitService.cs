@@ -227,6 +227,7 @@ namespace Gitee.VisualStudio.Services
             }
             catch (Exception ex)
             {
+                Console.Write(ex);
                 return null;
             }
         }
