@@ -59,7 +59,7 @@ namespace Gitee.VisualStudio.Services
 
         private IReadOnlyList<Project> GetProjectsOfPage(int page, string token)
         {
-            var url = $"https://git.oschina.net/api/v3/projects?page={page}&private_token={token}";
+            var url = $"https://gitee.com/api/v3/projects?page={page}&private_token={token}";
 
             var request = GetRequest(url);
             request.Method = "GET";
@@ -86,7 +86,7 @@ namespace Gitee.VisualStudio.Services
 
         public User Login(string email, string password)
         {
-            var request = GetRequest("https://git.oschina.net/api/v3/session");
+            var request = GetRequest("https://gitee.com/api/v3/session");
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
             var content = $"email={HttpUtility.UrlEncode(email)}&password={HttpUtility.UrlEncode(password)}";
@@ -123,7 +123,7 @@ namespace Gitee.VisualStudio.Services
 
             var result = new CreateResult();
 
-            var url = string.Format("https://git.oschina.net/api/v3/projects?private_token={0}", user.Token);
+            var url = string.Format("https://gitee.com/api/v3/projects?private_token={0}", user.Token);
 
             var request = GetRequest(url);
             request.Method = "POST";
