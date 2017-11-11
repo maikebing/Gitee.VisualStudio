@@ -143,17 +143,17 @@ namespace Gitee.VisualStudio.UI.ViewModels
 
         private void OnForgetPassword()
         {
-            _shell.OpenUrl("https://git.oschina.net/password/new");
+            _shell.OpenUrl("https://gitee.com/password/new");
         }
 
         private void OnActiveAccount()
         {
-            _shell.OpenUrl("https://git.oschina.net/user/activate");
+            _shell.OpenUrl("https://gitee.com/user/activate");
         }
 
         private void OnSignup()
         {
-            _shell.OpenUrl("https://git.oschina.net/signup");
+            _shell.OpenUrl("https://gitee.com/signup");
         }
     }
 }

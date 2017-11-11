@@ -19,22 +19,22 @@ namespace Gitee.VisualStudio.Shared
 
         public void Confirm(string message, Action<bool?> callback)
         {
-            MessageBox.Show(message, "确认", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBox.Show(message, "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
         }
 
         public void Error(string message)
         {
-            MessageBox.Show(message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         public void Information(string message)
         {
-            MessageBox.Show(message, "消息", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(message, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         public void Warning(string message)
         {
-            MessageBox.Show(message, "报警", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
 }

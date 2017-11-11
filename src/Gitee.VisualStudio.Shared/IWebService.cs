@@ -61,7 +61,7 @@ namespace Gitee.VisualStudio.Shared
 
         public string Url
         {
-            get { return $"https://git.oschina.net/{Path}.git"; }
+            get { return $"https://gitee.com/{Path}.git"; }
         }
 
         [JsonIgnore]

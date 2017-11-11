@@ -194,7 +194,7 @@ namespace Gitee.TeamFoundation.ViewModels
 
         private void OnSignUp()
         {
-            _shell.OpenUrl(@"https://git.oschina.net/signup");
+            _shell.OpenUrl(@"https://gitee.com/signup");
         }
 
         private void OnGetStarted()

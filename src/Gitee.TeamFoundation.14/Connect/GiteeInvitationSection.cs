@@ -61,7 +61,7 @@ namespace Gitee.TeamFoundation.Connect
 
         public override void SignUp()
         {
-            _shell.OpenUrl(@"https://git.oschina.net/signup");
+            _shell.OpenUrl(@"https://gitee.com/signup");
         }
 
         public void OnLogined()
