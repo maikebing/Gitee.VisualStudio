@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="bfbbc56d-5137-4398-9c13-78fb716ddcb8" Version="1.0.0.0" Language="zh-CN" Publisher="Gitee" />
+        <Identity Id="A7863FB2-3DBB-4224-AFD3-DCA7A7806205" Version="1.0.0.1" Language="zh-CN" Publisher="Gitee" />
         <DisplayName>Gitee Extension for Visual Studio</DisplayName>
         <Description xml:space="preserve">A Visual Studio Extension that brings the Gitee Flow into Visual Studio.</Description>
         <MoreInfo>https://gitee.com/GitGroup/Gitee.VisualStudio</MoreInfo>
         <License>LICENSE.txt</License>
-        <Icon>Resources\logo_32x32@2x.png</Icon>
+        <Icon>Resources\logo_128x128.png</Icon>
         <PreviewImage>Resources\preview_200x200.png</PreviewImage>
         <Tags>Gitee;git;open source;source control;branch;pull request;team explorer;commit;publish</Tags>
     </Metadata>
