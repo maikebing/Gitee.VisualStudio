@@ -6,10 +6,9 @@
 
 ## 安装
 
--   在 [码云/Gitee.VisualStudio附件](https://git.oschina.net/GitGroup/Gitee.VisualStudio/attach_files) 中下载预先编译好的vix安装文件。
--   下载完成之后，双击运行，中间会提示关闭所有VisualStudio相关进程，按照相关提示操作即可。
+Go [https://marketplace.visualstudio.com/items?itemName=Gitee.GiteeVisualStudio](https://marketplace.visualstudio.com/items?itemName=Gitee.GiteeVisualStudio)
 
-注：Gitee.VisualStudio 只支持 Visual Studio 2017。
+注：Gitee.VisualStudio 只支持 Visual Studio 2015/2017。
 
 ## 使用
 
