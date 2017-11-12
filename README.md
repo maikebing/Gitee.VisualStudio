@@ -48,3 +48,7 @@ Team Explorer 本身集成了 Commit，pull，sync 等 Git 操作，可以通过
 ## 演示动画
 
 ![image](./docs/images/option.gif)
+
+## 许可协议及历史
+
+本软件最初采用悬赏的方式由 @dilly 开发，代码借鉴了 Github for Visual Studio 源码，对此对所有相关的开发者表示感谢。
