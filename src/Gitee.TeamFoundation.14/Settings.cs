@@ -4,31 +4,31 @@ namespace Gitee.TeamFoundation
 {
     static class Settings
     {
-        public const string InvitationSectionId = "C2443FCC-6D62-4D31-B08A-C4DE70109C7F";
+        public const string InvitationSectionId = "44A4CF18-EDAC-4967-A332-8521A5CC0862";
         public const int InvitationSectionPriority = 100;
 
-        public const string ConnectSectionId = "FF7A257A-3AFB-44AC-B0F9-EA5F8789107E";
+        public const string ConnectSectionId = "80F53301-4049-42D1-BC9C-A3121A3F73E9";
         public const int ConnectSectionPriority = 10;
 
-        public const string HomeSectionId = "E200308C-D2D5-42DB-9C06-6FFED1E13097";
+        public const string HomeSectionId = "7DDFCD61-C0CD-48A3-BB7A-2A6603DFDBDC";
         public const int HomeSectionPriority = 10;
 
-        public const string PublishSectionId = "3B5CEDDD-0AD3-469B-988A-9F8B71A5ACCF";
+        public const string PublishSectionId = "426F751E-120E-4078-9A13-03374E181034";
         public const int PublishSectionPriority = 10;
 
-        public const string IssuesNavigationItemId = "31cdaebc-bf79-424e-963a-5ee5eb72dfed";
+        public const string IssuesNavigationItemId = "3B107B33-2BDF-4D31-9564-DE4A06DAA4F9";
         public const int Issues = TeamExplorerNavigationItemPriority.GitCommits - 1;
 
-        public const string PullRequestsNavigationItemId = "338a9580-c50c-4e28-a339-eead17305f08";
+        public const string PullRequestsNavigationItemId = "AC35B0CA-D52D-4019-8C10-6EB238B18E97";
         public const int PullRequests = TeamExplorerNavigationItemPriority.GitCommits - 2;
 
-        public const string AttachmentsNavigationItemId = "ace6cec2-ce97-4b4d-bda3-7a92ec36b2c4";
+        public const string AttachmentsNavigationItemId = "CC837A29-C9DE-41E9-9D0E-7402CA92F0C5";
         public const int Attachments = TeamExplorerNavigationItemPriority.GitCommits - 3;
 
-        public const string WikiNavigationItemId = "bb5b8d03-a1ab-40da-ae4f-8f833ec12a0c";
+        public const string WikiNavigationItemId = "5C08763C-3713-4180-976A-D1D0342A489C";
         public const int Wiki = TeamExplorerNavigationItemPriority.Settings - 4;
 
-        public const string StatisticsNavigationItemId = "c1691042-4653-455d-ae07-e291765b3788";
+        public const string StatisticsNavigationItemId = "BAD40359-E95C-4CD2-96F9-4C4016114A1B";
         public const int Statistics = TeamExplorerNavigationItemPriority.Settings - 5;
     }
 }

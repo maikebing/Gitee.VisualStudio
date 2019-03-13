@@ -113,7 +113,10 @@ namespace Gitee.TeamFoundation.ViewModels
             var dialog = _viewFactory.GetView<Dialog>(ViewTypes.Create);
             _shell.ShowDialog(Strings.Common_CreateRepository, dialog);
         }
-
+        public void Refresh()
+        {
+            LoadRepositoriesAsync();
+        }
         private void OnOpenRepository(Repository repo)
         {
             if (repo == null)

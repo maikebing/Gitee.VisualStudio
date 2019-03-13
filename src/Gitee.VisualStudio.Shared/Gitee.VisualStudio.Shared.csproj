@@ -150,6 +150,7 @@
     <Compile Include="Helpers\Bindable.cs" />
     <Compile Include="Helpers\Commands\DelegateCommand.cs" />
     <Compile Include="Helpers\Commands\WeakEventHandlerManager.cs" />
+    <Compile Include="Helpers\ThreadingHelper.cs" />
     <Compile Include="Helpers\Validatable.cs" />
     <Compile Include="IDialog.cs" />
     <Compile Include="IGitService.cs" />
