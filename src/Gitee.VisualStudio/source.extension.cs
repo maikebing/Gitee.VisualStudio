@@ -11,7 +11,7 @@ namespace Gitee.VisualStudio
         public const string Name = "Gitee Extension for Visual Studio";
         public const string Description = @"A Visual Studio Extension that brings the Gitee Flow into Visual Studio.";
         public const string Language = "zh-CN";
-        public const string Version = "1.0.0.2";
+        public const string Version = "1.0.0.5";
         public const string Author = "Gitee";
         public const string Tags = "Gitee;git;open source;source control;branch;pull request;team explorer;commit;publish";
     }

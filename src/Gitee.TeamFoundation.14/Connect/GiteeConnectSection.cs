@@ -53,7 +53,7 @@ namespace Gitee.TeamFoundation.Connect
         public override void Initialize(object sender, SectionInitializeEventArgs e)
         {
             base.Initialize(sender, e);
-            //IsVisible = _storage.IsLogined;
+          
             var gitExt = ServiceProvider.GetService<Microsoft.VisualStudio.TeamFoundation.Git.Extensibility.IGitExt>();
             gitExt.PropertyChanged += GitExt_PropertyChanged;
         }
@@ -86,13 +86,13 @@ namespace Gitee.TeamFoundation.Connect
         public void OnLoggedIn()
         {
             // Added Connect and Sign Up buttons in case user closes the invitation.
-            //IsVisible = true;
+            IsVisible = true;
         }
 
         public void InLoggedOut()
         {
             // Added Connect and Sign Up buttons in case user closes the invitation.
-            //IsVisible = false;
+            IsVisible = true;
         }
 
         public void OnClone(string url, Repository repository)
@@ -115,8 +115,8 @@ namespace Gitee.TeamFoundation.Connect
         {
             
             ((View as ConnectSectionView).DataContext as ConnectSectionViewModel).Refresh();
-            
-            base.Refresh();
+            IsVisible = true;
+          base.Refresh();
         }
 
         
