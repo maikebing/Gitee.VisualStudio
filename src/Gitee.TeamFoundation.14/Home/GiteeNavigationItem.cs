@@ -38,10 +38,7 @@ namespace Gitee.TeamFoundation.Home
         protected void OpenInBrowser(string endpoint)
         {
             var user = _storage.GetUser();
-
-            var url = $"https://gitee.com/{user.Username}/{_tes.Project.Name}/{endpoint}";
-
-            _shell.OpenUrl(url);
+            _shell.OpenUrl(endpoint);
         }
     }
 }

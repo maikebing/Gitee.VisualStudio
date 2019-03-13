@@ -25,7 +25,7 @@ namespace Gitee.TeamFoundation.Home
         {
             base.Invalidate();
 
-            IsVisible = IsVisible && _tes.Project != null && _tes.Project.IsWikiEnabled;
+            IsVisible = IsVisible && _tes.Project != null && _tes.Project.has_wiki;
         }
 
         protected override void SetDefaultColors()
@@ -35,7 +35,7 @@ namespace Gitee.TeamFoundation.Home
 
         public override void Execute()
         {
-            OpenInBrowser("wikis");
+            OpenInBrowser(_tes.Project.Url);
         }
     }
 }

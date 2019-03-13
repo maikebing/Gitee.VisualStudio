@@ -10,6 +10,7 @@ namespace Gitee.TeamFoundation.Home
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class AttachmentsNavigationItem : GiteeNavigationItem
     {
+        private readonly ITeamExplorerServices _tes;
         [ImportingConstructor]
         public AttachmentsNavigationItem(IGitService git, IShellService shell, IStorage storage, ITeamExplorerServices tes, IWebService ws)
            : base(Octicon.attachment, git, shell, storage, tes, ws)
@@ -24,7 +25,7 @@ namespace Gitee.TeamFoundation.Home
 
         public override void Execute()
         {
-            OpenInBrowser("attach_files");
+            OpenInBrowser(_tes.Project.releases_url);
         }
     }
 }

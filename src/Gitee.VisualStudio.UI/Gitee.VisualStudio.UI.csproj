@@ -199,6 +199,10 @@
     <Resource Include="Resources\images\windows.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Gitee.Api\Gitee.Api.csproj">
+      <Project>{ec52d2b9-5f3b-42cf-b2fa-4ade5c2e0502}</Project>
+      <Name>Gitee.Api</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Gitee.VisualStudio.Shared\Gitee.VisualStudio.Shared.csproj">
       <Project>{C3150B82-8E79-4FF6-A9FF-E361C108384F}</Project>
       <Name>Gitee.VisualStudio.Shared</Name>

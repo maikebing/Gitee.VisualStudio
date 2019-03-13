@@ -233,7 +233,7 @@ namespace Gitee.TeamFoundation.ViewModels
                         var user = _storage.GetUser();
                         var password = _storage.GetPassword();
 
-                        _git.PushWithLicense(user.Name, user.Email, password, result.Project.Url, path, SelectedLicense);
+                        _git.PushWithLicense(user.Username, user.Email, password, result.Project.Url, path, SelectedLicense);
                     }
                 }
                 catch (Exception ex)

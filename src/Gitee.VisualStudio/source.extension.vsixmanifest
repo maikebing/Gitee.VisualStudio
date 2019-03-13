@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="B1077C66-1666-4F60-BDFA-BA078FDABCCE" Version="1.0.0.1" Language="zh-CN" Publisher="Gitee" />
+        <Identity Id="B1077C66-1666-4F60-BDFA-BA078FDABCCE" Version="1.0.0.2" Language="zh-CN" Publisher="Gitee" />
         <DisplayName>Gitee Extension for Visual Studio</DisplayName>
         <Description xml:space="preserve">A Visual Studio Extension that brings the Gitee Flow into Visual Studio.</Description>
         <MoreInfo>https://gitee.com/GitGroup/Gitee.VisualStudio</MoreInfo>
@@ -18,14 +18,16 @@
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
         <Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0,]" />
+        <Dependency d:Source="Installed" Id="Microsoft.VisualStudio.TeamFoundation.TeamExplorer.Extensions" DisplayName="Team Explorer" Version="[14.0,)" />
     </Dependencies>
     <Assets>
         <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Gitee.VisualStudio.Shared" Path="|Gitee.VisualStudio.Shared|" />
         <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Gitee.TeamFoundation.14" Path="|Gitee.TeamFoundation.14|" />
         <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Gitee.TeamFoundation.15" Path="|Gitee.TeamFoundation.15|" />
         <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="Gitee.TeamFoundation.16" Path="|Gitee.TeamFoundation.16|" />
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
     </Assets>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[14.0,16.0)" DisplayName="Visual Studio 核心编辑器" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[14.0,)" DisplayName="Visual Studio 核心编辑器" />
     </Prerequisites>
 </PackageManifest>

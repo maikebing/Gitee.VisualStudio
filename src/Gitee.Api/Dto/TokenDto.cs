@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Gitee.Api
+namespace Gitee.Api.Dto
 {
     public class TokenDto
     {

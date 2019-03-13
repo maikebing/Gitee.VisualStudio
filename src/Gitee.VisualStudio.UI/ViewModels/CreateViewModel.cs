@@ -208,7 +208,7 @@ namespace Gitee.VisualStudio.UI.ViewModels
             var user = _storage.GetUser();
             var password = _storage.GetPassword();
 
-            _git.PushInitialCommit(user.Name, user.Email, password, url, SelectedGitIgnore, SelectedLicense);
+            _git.PushInitialCommit(user.Username, user.Email, password, url, SelectedGitIgnore, SelectedLicense);
         }
 
         private bool CanSave()

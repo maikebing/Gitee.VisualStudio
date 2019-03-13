@@ -5,66 +5,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Gitee.Api;
 namespace Gitee.VisualStudio.Shared
 {
     public class User
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
-        [JsonProperty("username")]
+
         public string Username { get; set; }
-        [JsonProperty("name")]
-        public string Name { get; set; }
-        [JsonProperty("email")]
-        public string Email { get; set; }
-        [JsonProperty("new_portrait")]
+
+        public UserDetail Detail { get; set; }
         public string Avatar { get; set; }
 
-        [JsonProperty("private_token")]
-        public string Token { get; set; }
-
-        public bool ShouldSerializeToken()
-        {
-            return false;
-        }
+        public Session Session { get; set; }
+        public string Email => Detail?.Email;
     }
 
-    public class Project
+    public class Project 
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
+        public  bool has_wiki =>Repo.has_wiki;
+        public  string Url => Repo.Url;
+        public   string Name =>Repo.Name;
 
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        public Gitee.Api.Dto.Repo Repo { get; set; }
 
-        [JsonProperty("path_with_namespace")]
-        public string Path { get; set; }
-
-        [JsonProperty("public")]
-        public bool Public { get; set; }
-
-        [JsonProperty("owner")]
-        public User Owner { get; set; }
-
-        [JsonProperty("fork?")]
-        public bool Fork { get; set; }
-
-        [JsonProperty("issues_enabled")]
-        public bool IsIssueEnabled { get; set; }
-
-        [JsonProperty("pull_requests_enabled")]
-        public bool IsPullRequestsEnabled { get; set; }
-
-        [JsonProperty("wiki_enabled")]
-        public bool IsWikiEnabled { get; set; }
-
-        public string Url
-        {
-            get { return $"https://gitee.com/{Path}.git"; }
-        }
-
-        [JsonIgnore]
+       [JsonIgnore]
         public string LocalPath { get; set; }
 
         [JsonIgnore]
@@ -72,12 +36,25 @@ namespace Gitee.VisualStudio.Shared
         {
             get
             {
-                return Public ? Octicon.@lock
-                    : Fork
+                return Repo.IsPublic ? Octicon.@lock
+                    : Repo.fork
                     ? Octicon.repo_forked
                     : Octicon.repo;
             }
         }
+
+        public bool has_issues => Repo.has_issues;
+        public string issues_url => Repo.issues_url;
+
+        public  Api.Dto.Owner Owner => Repo.Owner;
+
+        public string pulls_url => Repo.pulls_url;
+
+        public bool pull_requests_enabled => Repo.pull_requests_enabled;
+
+        public string releases_url => Repo.releases_url;
+
+        public string stargazers_url=> Repo.releases_url;
     }
 
     public class CreateResult

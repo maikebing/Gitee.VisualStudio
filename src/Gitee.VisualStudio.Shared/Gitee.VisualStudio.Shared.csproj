@@ -216,6 +216,12 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gitee.Api\Gitee.Api.csproj">
+      <Project>{ec52d2b9-5f3b-42cf-b2fa-4ade5c2e0502}</Project>
+      <Name>Gitee.Api</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -4,6 +4,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel.Composition;
 using System.IO;
+using Gitee.Api;
+using System.Threading.Tasks;
+using User = Gitee.VisualStudio.Shared.User;
 
 namespace Gitee.VisualStudio.Services
 {
@@ -12,7 +15,7 @@ namespace Gitee.VisualStudio.Services
     public class Storage : IStorage
     {
         private static readonly string _path;
-        private User _user;
+        private Shared.User _user;
 
         static Storage()
         {
@@ -20,6 +23,7 @@ namespace Gitee.VisualStudio.Services
         }
 
         private bool _isChecked;
+
         public bool IsLogined
         {
             get
@@ -28,13 +32,11 @@ namespace Gitee.VisualStudio.Services
                 {
                     if (!_isChecked)
                     {
-                        LoadUser();
-
-                        _isChecked = true;
+                        LoadUserAsync();
                     }
                 }
 
-                return _user != null && _user.Token != null;
+                return _user != null && _user.Session != null;
             }
         }
 
@@ -59,34 +61,30 @@ namespace Gitee.VisualStudio.Services
             {
                 credential.Target = key;
                 return credential.Load()
-                    ? credential.Password
+                    ? System.Text.Encoding.Default.GetString(Convert.FromBase64String(credential.Password))
                     : null;
             }
         }
 
-        public User GetUser()
+        public Shared.User GetUser()
         {
             if (_user != null)
             {
                 return _user;
             }
-
-            LoadUser();
-
+            LoadUserAsync().Wait();
             return _user;
         }
 
         public void SaveUser(User user, string password)
         {
             SavePassword(user.Email, password);
-            SaveToken(user.Email, user.Token);
-
+            SaveToken(user);
             SaveUserToLocal(user);
-
             _user = user;
         }
 
-        private void SaveUserToLocal(User user)
+        private void SaveUserToLocal(Shared.User user)
         {
             var serializer = new JsonSerializer();
             if (File.Exists(_path))
@@ -96,7 +94,7 @@ namespace Gitee.VisualStudio.Services
                 {
                     o = (JObject)serializer.Deserialize(reader);
 
-                    o["User"] = JToken.FromObject(user);
+                    o["User"] = JToken.FromObject(user.Detail);
                 }
                 using (var writer = new JsonTextWriter(new StreamWriter(_path)))
                 {
@@ -123,16 +121,16 @@ namespace Gitee.VisualStudio.Services
             }
         }
 
-        private void SaveToken(string email, string token)
+        private void SaveToken(Shared.User user)
         {
             var key = "token:https://gitee.com";
-            using (var credential = new Credential(email, token, key))
+            using (var credential = new Credential(user.Username, Convert.ToBase64String(System.Text.Encoding.Default.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(user.Session.Token))), key))
             {
                 credential.Save();
             }
         }
 
-        private void LoadUser()
+        private async Task LoadUserAsync()
         {
             if (File.Exists(_path))
             {
@@ -140,15 +138,12 @@ namespace Gitee.VisualStudio.Services
                 using (var reader = new JsonTextReader(new StreamReader(_path)))
                 {
                     var serializer = new JsonSerializer();
-
                     o = (JObject)serializer.Deserialize(reader);
-
                     var token = o["User"];
                     if (token != null)
                     {
-                        _user = token.ToObject<User>();
-
-                        _user.Token = GetToken();
+                        var t = token.ToObject<Gitee.Api.Dto.TokenDto>();
+                        _user.Session = await Gitee.Api.SDK.RefreshToken(t);
                     }
                 }
             }
