@@ -92,7 +92,7 @@ namespace Gitee.TeamFoundation.Connect
         public void InLoggedOut()
         {
             // Added Connect and Sign Up buttons in case user closes the invitation.
-            IsVisible = true;
+            IsVisible = false;
         }
 
         public void OnClone(string url, Repository repository)

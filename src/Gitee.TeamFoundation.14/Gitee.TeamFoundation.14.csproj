@@ -40,7 +40,7 @@
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LibGit2Sharp">
@@ -58,6 +58,9 @@
     <Reference Include="Microsoft.TeamFoundation.Controls">
       <HintPath>..\..\lib\14.0\Microsoft.TeamFoundation.Controls.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Git.Client">
+      <HintPath>..\..\lib\14.0\Microsoft.TeamFoundation.Git.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.Git.Controls">
       <HintPath>..\..\lib\14.0\Microsoft.TeamFoundation.Git.Controls.dll</HintPath>

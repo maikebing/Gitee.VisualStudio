@@ -1,7 +1,6 @@
 ﻿using Gitee.VisualStudio.Shared;
 using Gitee.VisualStudio.Shared.Helpers;
 using Gitee.VisualStudio.Shared.Helpers.Commands;
-using Microsoft.VisualStudio.TeamFoundation.Git.Extensibility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
