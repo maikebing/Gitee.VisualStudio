@@ -11,7 +11,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Gitee.TeamFoundation</RootNamespace>
-    <AssemblyName>Gitee.TeamFoundation.15</AssemblyName>
+    <AssemblyName>Gitee.TeamFoundation.16</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <OutputPath>..\..\build\$(Configuration)\</OutputPath>
@@ -38,6 +38,9 @@
     <AssemblyOriginatorKeyFile>..\..\script\Key.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LibGit2Sharp">
@@ -191,7 +194,6 @@
       <Link>Views\PublishSectionView.xaml.cs</Link>
       <DependentUpon>PublishSectionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Services\Registry.key.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="..\Gitee.TeamFoundation.14\Views\ConnectSectionView.xaml">

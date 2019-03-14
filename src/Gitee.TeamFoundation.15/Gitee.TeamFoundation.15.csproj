@@ -39,6 +39,9 @@
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="LibGit2Sharp">
       <HintPath>..\..\packages\LibGit2Sharp.0.24.0\lib\net40\LibGit2Sharp.dll</HintPath>
@@ -191,7 +194,6 @@
       <Link>Views\PublishSectionView.xaml.cs</Link>
       <DependentUpon>PublishSectionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Services\Registry.key.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="..\Gitee.TeamFoundation.14\Views\ConnectSectionView.xaml">
