@@ -57,6 +57,7 @@ namespace Gitee.TeamFoundation.ViewModels
 
         private void LoadResources()
         {
+            Licenses.Clear();
             Licenses.Add(string.Empty, Strings.Common_ChooseALicense);
             SelectedLicense = string.Empty;
             foreach (var line in _git.GetLicenses())
@@ -180,7 +181,7 @@ namespace Gitee.TeamFoundation.ViewModels
         {
             OnPropertyChanged(nameof(ShowLogin));
             OnPropertyChanged(nameof(ShowSignUp));
-
+            LoadResources();
             ShowGetStarted = true;
         }
 
@@ -239,6 +240,7 @@ namespace Gitee.TeamFoundation.ViewModels
                 catch (Exception ex)
                 {
                     error = ex.Message;
+                    _tes.ShowError(ex.Message);
                 }
             }).ContinueWith(task =>
             {
