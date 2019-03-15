@@ -11,16 +11,12 @@ namespace Gitee.TeamFoundation.Home
     public class AttachmentsNavigationItem : GiteeNavigationItem
     {
         private readonly ITeamExplorerServices _tes;
+
         [ImportingConstructor]
         public AttachmentsNavigationItem(IGitService git, IShellService shell, IStorage storage, ITeamExplorerServices tes, IWebService ws)
            : base(Octicon.attachment, git, shell, storage, tes, ws)
         {
             Text = Strings.Items_Attachments;
-        }
-
-        protected override void SetDefaultColors()
-        {
-            m_defaultArgbColorBrush = new SolidColorBrush(Colors.LightBlueNavigationItem);
         }
 
         public override void Execute()

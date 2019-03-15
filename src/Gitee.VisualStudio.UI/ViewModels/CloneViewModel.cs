@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Data;
@@ -34,6 +35,7 @@ namespace Gitee.VisualStudio.UI.ViewModels
 
             Repositories = CollectionViewSource.GetDefaultView(_repositories);
             Repositories.GroupDescriptions.Add(new PropertyGroupDescription("Owner"));
+            Repositories.Filter = RepoFilter;
 
             _baseRepositoryPath = _storage.GetBaseRepositoryDirectory();
 
@@ -51,6 +53,36 @@ namespace Gitee.VisualStudio.UI.ViewModels
             get { return _baseRepositoryPath; }
             set { SetProperty(ref _baseRepositoryPath, value); }
         }
+
+        private bool RepoFilter(object item)
+        {
+            var repo = item as ProjectViewModel;
+            
+            if (string.IsNullOrEmpty(FilterText))
+            {
+                return true;
+            }
+            else
+            {
+                var compare = CultureInfo.CurrentCulture.CompareInfo;
+                return compare.IndexOf(repo.Name, FilterText, CompareOptions.IgnoreCase) != -1
+                    || compare.IndexOf(repo.Description, FilterText, CompareOptions.IgnoreCase) != -1;
+            }
+            
+        }
+
+        private string _filterText;
+
+        public string FilterText
+        {
+            get { return _filterText; }
+            set
+            {
+                _filterText = value;
+                Repositories.Refresh();
+            }
+        }
+
 
         private DelegateCommand _browseCommand;
         public ICommand BrowseCommand
@@ -70,6 +102,13 @@ namespace Gitee.VisualStudio.UI.ViewModels
             get { return _isBusy; }
             set { SetProperty(ref _isBusy, value); }
         }
+        private bool _filterTextIsEnabled;
+        public bool FilterTextIsEnabled
+        {
+            get { return _filterTextIsEnabled; }
+            set { SetProperty(ref _filterTextIsEnabled, value); }
+        }
+
 
         private string _message;
         public string Message
@@ -107,7 +146,7 @@ namespace Gitee.VisualStudio.UI.ViewModels
                 BaseRepositoryPath = browsed;
             }
         }
-
+   
         private void OnClone()
         {
             var path = System.IO.Path.Combine(BaseRepositoryPath, SelectedRepository.Name);
@@ -129,7 +168,7 @@ namespace Gitee.VisualStudio.UI.ViewModels
             IEnumerable<Project> loaded = null;
 
             IsBusy = true;
-            Task.Run((Action)(async () =>
+            Task.Run(async () =>
             {
                 try
                 {
@@ -139,7 +178,7 @@ namespace Gitee.VisualStudio.UI.ViewModels
                 {
                     error = Strings.CloneView_FailedToLoadProjects;
                 }
-            })).ContinueWith(task =>
+            }).ContinueWith(task =>
             {
                 IsBusy = false;
                 _repositories.Clear();
@@ -159,6 +198,7 @@ namespace Gitee.VisualStudio.UI.ViewModels
                         {
                             first.IsExpanded = true;
                         }
+                        FilterTextIsEnabled = true;
                     }
                 }
                 else
@@ -168,6 +208,6 @@ namespace Gitee.VisualStudio.UI.ViewModels
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-     
+
     }
 }

@@ -28,11 +28,6 @@ namespace Gitee.TeamFoundation.Home
             IsVisible = IsVisible && _tes.Project != null && _tes.Project.PullRequestsEnabled;
         }
 
-        protected override void SetDefaultColors()
-        {
-            m_defaultArgbColorBrush = new SolidColorBrush(Colors.RedNavigationItem);
-        }
-
         public override void Execute()
         {
             OpenInBrowser(_tes.Project.PullsUrl);

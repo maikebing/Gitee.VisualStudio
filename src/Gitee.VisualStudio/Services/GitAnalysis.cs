@@ -21,7 +21,7 @@ namespace Gitee.VisualStudio.Services
     public sealed class GitAnalysis : IDisposable
     {
         private readonly Repository repository;
-        readonly string targetFullPath;
+        private readonly string targetFullPath;
 
         public bool IsDiscoveredGitRepository => repository != null;
 
@@ -34,10 +34,10 @@ namespace Gitee.VisualStudio.Services
                 this.repository = new LibGit2Sharp.Repository(repositoryPath);
                 RepositoryPath = repositoryPath;
             }
-            
-            
         }
-        static Dictionary<string, GitAnalysis> dicgit = new Dictionary<string, GitAnalysis>();
+
+        private static Dictionary<string, GitAnalysis> dicgit = new Dictionary<string, GitAnalysis>();
+
         public static GitAnalysis GetBy(string fullpath)
         {
             if (!dicgit.ContainsKey(fullpath))
@@ -46,6 +46,7 @@ namespace Gitee.VisualStudio.Services
             }
             return dicgit[fullpath];
         }
+
         public string RepositoryPath { get; private set; }
         public LibGit2Sharp.Repository Repository { get { return repository; } }
 
@@ -55,10 +56,13 @@ namespace Gitee.VisualStudio.Services
             {
                 case GiteeUrlType.CurrentBranch:
                     return repository.Head.FriendlyName.Replace("origin/", "");
+
                 case GiteeUrlType.CurrentRevision:
                     return repository.Commits.First().Id.ToString(8);
+
                 case GiteeUrlType.CurrentRevisionFull:
                     return repository.Commits.First().Id.Sha;
+
                 case GiteeUrlType.Master:
                 default:
                     return "master";
@@ -70,18 +74,23 @@ namespace Gitee.VisualStudio.Services
             switch (urlType)
             {
                 case GiteeUrlType.CurrentBranch:
-                    return "当前分支" + repository.Head.FriendlyName.Replace("origin/", "");
+                    return "浏览当前分支" + repository.Head.FriendlyName.Replace("origin/", "");
+
                 case GiteeUrlType.CurrentRevision:
-                    return $"修订{repository.Commits.First().Id.ToString(8)}";
+                    return $"浏览修订{repository.Commits.First().Id.ToString(8)}";
+
                 case GiteeUrlType.CurrentRevisionFull:
-                    return $"修订({repository.Commits.First().Id.ToString(8)})完整ID";
+                    return $"浏览修订({repository.Commits.First().Id.ToString(8)})完整ID";
+
                 case GiteeUrlType.Blame:
-                    return "追溯";
+                    return "按行查看";
+
                 case GiteeUrlType.Commits:
-                    return "提交";
+                    return "浏览提交历史";
+
                 case GiteeUrlType.Master:
                 default:
-                    return "master";
+                    return "浏览主分支";
             }
         }
 
@@ -131,17 +140,19 @@ namespace Gitee.VisualStudio.Services
             }
             return urlRoot;
         }
+
         public string GetRepoOriginRemoteUrl()
         {
             string urlRoot = string.Empty;
             var originUrl = repository.Config.Get<string>("remote.origin.url");
             if (originUrl != null)
             {
-                urlRoot = originUrl.Value ;
+                urlRoot = originUrl.Value;
             }
             return urlRoot;
         }
-        void Dispose(bool disposing)
+
+        private void Dispose(bool disposing)
         {
             if (repository != null)
             {

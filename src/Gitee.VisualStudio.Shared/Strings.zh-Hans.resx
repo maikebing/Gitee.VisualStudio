@@ -230,7 +230,7 @@
     <value>邮箱为必填</value>
   </data>
   <data name="Login_FailedToLogin" xml:space="preserve">
-    <value>登陆失败</value>
+    <value>登录失败</value>
   </data>
   <data name="Login_ForgetPassword" xml:space="preserve">
     <value>忘记密码？</value>

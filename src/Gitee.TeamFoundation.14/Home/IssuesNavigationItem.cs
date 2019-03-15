@@ -20,11 +20,6 @@ namespace Gitee.TeamFoundation.Home
             Text = Strings.Items_Issues;
         }
 
-        protected override void SetDefaultColors()
-        {
-            m_defaultArgbColorBrush = new SolidColorBrush(Colors.LightBlueNavigationItem);
-        }
-
         public override void Invalidate()
         {
             base.Invalidate();

@@ -28,6 +28,7 @@ namespace Gitee.TeamFoundation.Home
             var gitExt = ServiceProvider.GetService<Microsoft.VisualStudio.TeamFoundation.Git.Extensibility.IGitExt>();
             gitExt.PropertyChanged += GitExt_PropertyChanged;
         }
+
         private void GitExt_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "ActiveRepositories")
@@ -35,18 +36,17 @@ namespace Gitee.TeamFoundation.Home
                 this.Refresh();
             }
         }
+
         public override void Refresh()
         {
             Task.Run(() =>
             {
                 return _tes.IsGiteeRepoAsync();
-
             }).ContinueWith(async (Task<bool> r) =>
             {
                 await ThreadingHelper.SwitchToMainThreadAsync();
                 IsVisible = await r;
             }); ;
-      
         }
 
         protected override ITeamExplorerSection CreateViewModel(SectionInitializeEventArgs e)

@@ -10,7 +10,7 @@
                xmlns:vms="clr-namespace:Gitee.VisualStudio.UI.ViewModels"
                d:DataContext="{d:DesignInstance Type=vms:CloneViewModel, IsDesignTimeCreatable=False}"
                mc:Ignorable="d"
-               Height="420"
+               Height="449"
                Width="390">
     <controls:BusyIndicator IsBusy="{Binding IsBusy}"
                             BusyContent="{x:Static shared:Strings.Common_Loading}">
@@ -157,19 +157,23 @@
                                         Margin="10"
                                         DockPanel.Dock="Top"
                                         Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"
-                                        IsEnabled="{Binding FilterTextIsEnabled, Mode=OneWay}" />
+                                        IsEnabled="{Binding FilterTextIsEnabled, Mode=OneWay}" Height="28" FontSize="13" />
 
                 <Button x:Name="cloneButton"
-                        Margin="12"
-                        Width="75"
+                        Margin="10,12,10.4,12"
+                          Background="#3b83c0"
+                    Foreground="#ffffff"
+                    FontWeight="Bold"
+                    FontSize="16"
+                        Width="370"
                         HorizontalAlignment="Center"
                         IsDefault="True"
                         DockPanel.Dock="Bottom"
                         Command="{Binding CloneCommand}"
-                        Content="{x:Static shared:Strings.Common_Clone}"/>
+                        Content="{x:Static shared:Strings.Common_Clone}" Height="46"/>
 
                 <Border DockPanel.Dock="Bottom"
-                        Style="{StaticResource repositoryBorderStyle}">
+                        Style="{StaticResource repositoryBorderStyle}" Height="56">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -181,25 +185,28 @@
                                  Grid.Column="1"
                                  VerticalAlignment="Center"
                                  IsReadOnly="True"
-                                 Text="{Binding BaseRepositoryPath, UpdateSourceTrigger=PropertyChanged}" />
+                                 Text="{Binding BaseRepositoryPath, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="0,10" Width="257" Height="35" FontSize="13" />
                         <Button x:Name="browsePathButton"
-                                Grid.Column="2"
+                                  Background="#3b83c0"
+                    Foreground="#ffffff"
+                    FontWeight="Bold"
+                    FontSize="15"
+                                Grid.Column="1"
                                 VerticalAlignment="Center"
                                 Content="{x:Static shared:Strings.Common_Browse}"
-                                Width="75"
-                                Command="{Binding BrowseCommand}" />
-                        <Label Grid.Row="3"
+                                Command="{Binding BrowseCommand}" Margin="262,10,10,10" Height="35" />
+                        <Label
                                Grid.Column="0"
-                               Margin="4,0"
+                               Margin="3,6,5,10"
                                Content="{x:Static shared:Strings.Common_Path}"
-                               Target="{Binding ElementName=clonePath}" />
+                               Target="{Binding ElementName=clonePath}" FontSize="15" />
                     </Grid>
                 </Border>
 
                 <ListBox x:Name="repositoryList"
                          HorizontalContentAlignment="Stretch"
                          ItemsSource="{Binding Repositories}"
-                         SelectedItem="{Binding SelectedRepository}">
+                         SelectedItem="{Binding SelectedRepository}" FontSize="13" Width="370">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
                             <i:InvokeCommandAction Command="{Binding CloneCommand}" />
@@ -212,7 +219,7 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                <Expander IsExpanded="{Binding Name.IsExpanded}"
+                                                <Expander IsExpanded="true"
                                                           Style="{StaticResource cloneGroupExpander}">
                                                     <Expander.Header>
                                                         <Border Style="{StaticResource repositoryBorderStyle}">
@@ -224,8 +231,8 @@
                                                                        Height="16"
                                                                        Margin="0,0,5,0"
                                                                        RenderOptions.BitmapScalingMode="HighQuality"
-                                                                       Source="{Binding Items[0].Owner.Avatar}" />
-                                                                <TextBlock Text="{Binding Path=Name.Name}" />
+                                                                       Source="{Binding Path=Name.AvatarUrl}" />
+                                                                <TextBlock Text="{Binding Path=Name.DisplayName}" />
                                                             </StackPanel>
                                                         </Border>
                                                     </Expander.Header>
@@ -249,13 +256,25 @@
                                                            Height="16"
                                                            Margin="32,0,6,0"
                                                            VerticalAlignment="Center"
-                                                           Foreground="#D0D0D0"
+                                                           Foreground="#919191"
                                                            Icon="{Binding Icon}" />
-                                    <TextBlock x:Name="label"
-                                               VerticalAlignment="Center"
-                                               Foreground="#666"
-                                               Text="{Binding Name}"
-                                               TextTrimming="CharacterEllipsis" />
+                                    <StackPanel>
+                                        <TextBlock x:Name="label"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="Black"
+                                                   Text="{Binding Name}"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   MaxWidth="275" />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Foreground="#666"
+                                                   Text="{Binding Description}"
+                                                   Visibility="{Binding DescriptionVisibility}"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   FontSize="9"
+                                                   MaxWidth="275"
+                                                   
+                                               />
+                                    </StackPanel>
                                 </StackPanel>
                             </Border>
                         </DataTemplate>
