@@ -44,7 +44,7 @@ namespace Gitee.TeamFoundation.Home
 
         protected void OpenInBrowser(string endpoint)
         {
-            _shell.OpenUrl($"{_tes.Project.}"endpoint);
+            _shell.OpenUrl(endpoint);
         }
     }
 }

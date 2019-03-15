@@ -85,6 +85,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\common\SDKConfig.cs">
+      <Link>Services\SDKConfig.cs</Link>
+    </Compile>
     <Compile Include="GiteePackage.cs" />
     <Compile Include="Helpers\OutputWindowHelper.cs" />
     <Compile Include="Services\GitAnalysis.cs" />

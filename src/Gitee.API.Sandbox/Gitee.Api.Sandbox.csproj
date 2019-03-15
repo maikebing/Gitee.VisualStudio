@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\common\SDKConfig.cs" Link="SDKConfig.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Gitee.Api\Gitee.Api.csproj" />
   </ItemGroup>
 

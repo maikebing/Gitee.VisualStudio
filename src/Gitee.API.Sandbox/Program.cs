@@ -13,7 +13,9 @@ namespace Gitee.API.Sandbox
             {
                 try
                 {
-                    var client = await SDK.LoginAsync("gitee@vip.qq.com", "abc12345");
+                    SDK.client_id = SdkConfig.client_id;
+                    SDK.client_secret = SdkConfig.client_secret;
+                    var client = await SDK.LoginAsync(SdkConfig.username,SdkConfig.password);
                     var user = await client.GetUserAsync();
                     var poject = await client.GetReposAsync(1,20);
                  //   await client.CreateRepoAsync("test" + DateTime.Now.ToString("yyyyMMddHHmmss"), DateTime.Now.ToString(), true);

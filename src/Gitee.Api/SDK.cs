@@ -13,6 +13,9 @@ namespace Gitee.Api
 {
     public static class SDK
     {
+        public static string client_id { get;  set; }
+        public static string client_secret { get;  set; }
+
         public static Task<UserDetail> GetUserAsync(this Session session) => session.Client.GetV5UserAsync(session.Token.access_token);
 
         /// <summary>
@@ -100,7 +103,7 @@ namespace Gitee.Api
         public static async Task<Session> LoginAsync(string username, string password)
         {
             var _session = new Session();
-            _session.Token = await _session.Request<TokenDto>("../oauth/token", new { grant_type = "password", username, password, SdkConfig.client_id, SdkConfig.client_secret, scope = "projects user_info issues notes" }, Method.POST);
+            _session.Token = await _session.Request<TokenDto>("../oauth/token", new { grant_type = "password", username, password,  client_id, client_secret, scope = "projects user_info issues notes" }, Method.POST);
             _session.Client = new Client(new HttpClient());
             _session.Client.BaseUrl = _session.BaseURL;
             return _session;

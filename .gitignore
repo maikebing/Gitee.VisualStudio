@@ -241,3 +241,4 @@ nunit-TrackingCollectionTests.xml
 GitHubVS.sln.DotSettings
 **/generated/*.cs
 /src/Gitee.Api/SDKConfig.cs
+/src/common/SDKConfig.cs
