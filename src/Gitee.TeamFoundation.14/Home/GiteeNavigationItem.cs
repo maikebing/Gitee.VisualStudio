@@ -48,13 +48,7 @@ namespace Gitee.TeamFoundation.Home
 
         public override void Invalidate()
         {
-            Task.Run(async () =>
-            {
-                return await _tes.IsGiteeRepoAsync() && _tes.Project != null;
-            }).ContinueWith(async (Task<bool> b) =>
-            {
-                IsVisible = await b;
-            });
+            IsVisible = _tes.IsGiteeRepo() ;
         }
 
         protected void OpenInBrowser(string endpoint)

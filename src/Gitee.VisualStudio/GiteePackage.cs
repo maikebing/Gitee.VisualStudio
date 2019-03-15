@@ -50,8 +50,7 @@ namespace Gitee.VisualStudio
         public GiteePackage()
         {
             //如果提示缺少SdkConfig.cs ，请自行创建 src\common\SDKConfig.cs
-            Gitee.Api.SDK.client_id = Gitee.Api.SdkConfig.client_id;
-            Gitee.Api.SDK.client_secret = Gitee.Api.SdkConfig.client_secret;
+         
             if (Application.Current != null)
             {
                 Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;

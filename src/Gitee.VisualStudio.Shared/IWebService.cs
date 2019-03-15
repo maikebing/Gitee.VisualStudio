@@ -23,7 +23,7 @@ namespace Gitee.VisualStudio.Shared
     public class Project 
     {
         public  bool HasWiki =>Repo.has_wiki;
-        public  string Url => $"{Repo.html_url}.git";
+        public  string Url =>  Repo.html_url;
         public   string Name =>Repo.Name;
 
         public Gitee.Api.Dto.Repo Repo { get; set; }
@@ -42,23 +42,26 @@ namespace Gitee.VisualStudio.Shared
                     : Octicon.repo;
             }
         }
+        public string GiteeHomeUrl => Repo != null ? (Repo.html_url.ToLower().EndsWith(".git") ? Repo.html_url.Remove(Repo.html_url.Length - 4) : Repo.html_url) : null;
 
         public bool HasIssues => Repo != null ? Repo.has_issues : false;
-        public string IssuesUrl => $"{Repo?.html_url}/issues";
+        public string IssuesUrl => $"{GiteeHomeUrl}/issues";
 
         public Api.Dto.Owner Owner => Repo?.Owner;
 
-        public string PullsUrl => $"{Repo?.html_url}/pulls";
+        public string PullsUrl => $"{GiteeHomeUrl}/pulls";
 
         public bool PullRequestsEnabled => Repo != null ? Repo.pull_requests_enabled : false;
 
-        public string ReleasesUrl => $"{Repo?.html_url}/attach_files";
+        public string ReleasesUrl => $"{GiteeHomeUrl}/attach_files";
 
-        public string StatisticsUrl => $"{Repo?.html_url}/repository/stats/{Repo?.default_branch}";
+        public string StatisticsUrl => $"{GiteeHomeUrl}/graph/{Repo?.default_branch}";
 
         public string Description => Repo?.Description;
 
         public string DisplayName => Repo.human_name;
+
+        public string WikiUrl=>$"{GiteeHomeUrl}/wikis";
     }
 
     public class CreateResult

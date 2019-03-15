@@ -23,7 +23,7 @@ namespace Gitee.VisualStudio.Shared
         void ClearNotifications();
         RepositoryInfo GetActiveRepository();
         string GetSolutionPath();
-        Task<bool> IsGiteeRepoAsync();
+        bool IsGiteeRepo();
 
         Project Project { get; }
     }

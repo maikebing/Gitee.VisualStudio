@@ -48,14 +48,7 @@ namespace Gitee.TeamFoundation.Sync
         public override void Initialize(object sender, SectionInitializeEventArgs e)
         {
             base.Initialize(sender, e);
-            Task.Run(async () =>
-            {
-                return await _tes.IsGiteeRepoAsync();
-            }).ContinueWith(async (Task<bool> result) =>
-            {
-                this.IsVisible = await result;
-            });
-
+            IsVisible = _tes.IsGiteeRepo();
         }
 
         protected override object CreateView(SectionInitializeEventArgs e)
