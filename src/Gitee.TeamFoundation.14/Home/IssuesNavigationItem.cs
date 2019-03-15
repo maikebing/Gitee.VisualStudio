@@ -29,12 +29,12 @@ namespace Gitee.TeamFoundation.Home
         {
             base.Invalidate();
 
-            IsVisible = IsVisible && _tes.Project != null && _tes.Project.has_issues;
+            IsVisible = IsVisible && _tes.Project != null && _tes.Project.HasIssues;
         }
 
         public override void Execute()
         {
-            OpenInBrowser(_tes.Project.issues_url);
+            OpenInBrowser(_tes.Project.IssuesUrl);
         }
     }
 }

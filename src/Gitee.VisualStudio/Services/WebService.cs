@@ -60,7 +60,7 @@ namespace Gitee.VisualStudio.Services
             {
                 var ses = Gitee.Api.SDK.LoginAsync(username, password).GetAwaiter().GetResult();
                 var userdetail = ses.GetUserAsync().GetAwaiter().GetResult();
-                var user = new Shared.User() { Detail = userdetail, Session = ses, Username = username, Avatar = userdetail.Avatar_url };
+                var user = new Shared.User() { Detail = userdetail, Session = ses, Username = username };
                 return user;
             }
             catch (WebException ex)

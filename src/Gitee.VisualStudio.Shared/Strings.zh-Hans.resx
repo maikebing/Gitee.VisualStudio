@@ -193,7 +193,7 @@
     <value>这是一个很酷的项目(可选)</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Powerful collaboration, code review, and code management for open source and private projects.</value>
+    <value>码云(gitee.com)是开源中国推出的代码托管平台，支持 Git 和 SVN，提供免费的私有仓库托管。目前已有超过 300 万的开发者选择码云。</value>
   </data>
   <data name="Invitation_Connect" xml:space="preserve">
     <value>连接</value>
@@ -254,10 +254,10 @@
     <value>注册</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Gitee</value>
+    <value>码云(gitee.com)</value>
   </data>
   <data name="Provider" xml:space="preserve">
-    <value>OSChina.Net</value>
+    <value>开源中国旗下码云https://gitee.com/</value>
   </data>
   <data name="Publish_Login" xml:space="preserve">
     <value>登录</value>

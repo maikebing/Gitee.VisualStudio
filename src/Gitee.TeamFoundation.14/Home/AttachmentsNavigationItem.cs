@@ -25,7 +25,7 @@ namespace Gitee.TeamFoundation.Home
 
         public override void Execute()
         {
-            OpenInBrowser(_tes.Project.releases_url);
+            OpenInBrowser(_tes.Project.ReleasesUrl);
         }
     }
 }

@@ -31,8 +31,10 @@ namespace Gitee.VisualStudio.Services
             {
                 lock (_path)
                 {
-                    if (DateTime.Now.Subtract(lastcheck).TotalSeconds > 5)
+
+                    if (!_isChecked && DateTime.Now.Subtract(lastcheck).TotalSeconds > 5  )
                     {
+                        _isChecked = true;
                         Task.Run(() => LoadUserAsync()).ContinueWith(task =>
                         {
                             if (task.IsCompleted)
@@ -50,6 +52,7 @@ namespace Gitee.VisualStudio.Services
                                     OutputWindowHelper.ExceptionWriteLine($"Gitee4VS LoadUserAsync  IsFaulted {task.Exception.Message}.", task.Exception);
                                 }
                             }
+                            _isChecked = false;
                         });
                     }
                 }
@@ -69,11 +72,13 @@ namespace Gitee.VisualStudio.Services
                     : null;
             }
         }
+     
 
-        private (string access_token,DateTime exp,string refresh_token) GetAccessToken()
+        private (string access_token,DateTime exp,string refresh_token,string username) GetAccessToken()
         {
             string _access_tokenken = null;
             string _refresh_token = null;
+            string _username = null;
             DateTime exp = DateTime.MinValue;
             try
             {
@@ -81,16 +86,17 @@ namespace Gitee.VisualStudio.Services
             
                 using (var credential = new Credential())
                 {
+                    credential.Target = key;
                     if (credential.Load())
                     {
                         if (DateTime.TryParseExact(credential.Description, "yyyy-MM-dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out exp))
                         {
                             if (DateTime.Now < exp)
                             {
-                                credential.Target = key;
                                 _access_tokenken = credential.Password;
                             }
                         }
+                        _username = credential.Username;
                     }
                 }
                 var keyref = "refresh_token:https://gitee.com";
@@ -106,7 +112,7 @@ namespace Gitee.VisualStudio.Services
             {
                 throw new Exception("未能加载gitee的token信息，需要重新登录。");
             }
-            return (_access_tokenken, exp, _refresh_token);
+            return (_access_tokenken, exp, _refresh_token, _username);
         }
 
         public async Task<Shared.User> GetUserAsync()
@@ -153,32 +159,60 @@ namespace Gitee.VisualStudio.Services
 
         private async Task LoadUserAsync()
         {
-            var token = GetAccessToken();
-            if (string.IsNullOrEmpty(token.access_token) || DateTime.Now > token.exp)
+            try
             {
-                if (!string.IsNullOrEmpty(token.refresh_token))
+                var token = GetAccessToken();
+                _user = new User();
+                if (string.IsNullOrEmpty(token.access_token) || DateTime.Now > token.exp)
                 {
-                    try
+                    if (!string.IsNullOrEmpty(token.refresh_token))
                     {
-                        _user.Session = await SDK.RefreshToken(token.refresh_token);
+                        try
+                        {
+                            _user.Session = await SDK.RefreshToken(token.refresh_token);
+                        }
+                        catch (Exception)
+                        {
+                            _user.Session = null;
+                        }
                     }
-                    catch (Exception)
+
+                }
+                else
+                {
+                    _user.Session = SDK.ContinueByToken(token.refresh_token, token.access_token, token.exp);
+                }
+                if (_user.Session != null)
+                {
+                    _user.Username = token.username;
+                    if (_user.Detail == null)
                     {
-                        _user.Session = null;
+                        _user.Detail = await _user.Session.GetUserAsync();
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _user.Session = null;
+            }
+            try
+            {
                 if (_user.Session == null)
                 {
                     var key = "git:https://gitee.com";
                     using (var credential = new Credential())
                     {
+                        credential.Target = key;
+                        credential.Load();
+                        _user.Username = credential.Username;
                         _user.Session = await SDK.LoginAsync(credential.Username, credential.Password);
+                        _user.Detail = await _user.Session.GetUserAsync();
                     }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                _user.Session = SDK.ContinueByToken(token.refresh_token, token.access_token, token.exp);
+                throw new Exception("用户登录凭证无效，请重新登陆",ex);
             }
         }
 

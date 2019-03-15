@@ -25,7 +25,7 @@ namespace Gitee.TeamFoundation.Home
         {
             base.Invalidate();
 
-            IsVisible = IsVisible && _tes.Project != null && _tes.Project.has_wiki;
+            IsVisible = IsVisible && _tes.Project != null && _tes.Project.HasWiki;
         }
 
         protected override void SetDefaultColors()

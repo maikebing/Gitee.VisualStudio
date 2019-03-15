@@ -14,7 +14,7 @@ namespace Gitee.VisualStudio.Shared
         public string Username { get; set; }
 
         public UserDetail Detail { get; set; }
-        public string Avatar { get; set; }
+        public string Avatar => Detail?.Avatar_url;
 
         public Session Session { get; set; }
         public string Email => Detail?.Email;
@@ -22,7 +22,7 @@ namespace Gitee.VisualStudio.Shared
 
     public class Project 
     {
-        public  bool has_wiki =>Repo.has_wiki;
+        public  bool HasWiki =>Repo.has_wiki;
         public  string Url => $"{Repo.html_url}.git";
         public   string Name =>Repo.Name;
 
@@ -43,18 +43,18 @@ namespace Gitee.VisualStudio.Shared
             }
         }
 
-        public bool has_issues => Repo.has_issues;
-        public string issues_url => Repo.issues_url;
+        public bool HasIssues => Repo.has_issues;
+        public string IssuesUrl => $"{Repo.html_url}/issues";
 
         public  Api.Dto.Owner Owner => Repo.Owner;
 
-        public string pulls_url => Repo.pulls_url;
+        public string PullsUrl => $"{Repo.html_url}/pulls";
 
-        public bool pull_requests_enabled => Repo.pull_requests_enabled;
+        public bool PullRequestsEnabled => Repo.pull_requests_enabled;
 
-        public string releases_url => Repo.releases_url;
+        public string ReleasesUrl => $"{Repo.html_url}/attach_files";
 
-        public string stargazers_url=> Repo.releases_url;
+        public string StatisticsUrl=> $"{Repo.html_url}/repository/stats/{Repo.default_branch}";
     }
 
     public class CreateResult

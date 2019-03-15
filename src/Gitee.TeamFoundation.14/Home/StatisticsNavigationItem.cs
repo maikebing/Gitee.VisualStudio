@@ -29,7 +29,7 @@ namespace Gitee.TeamFoundation.Home
         public override void Execute()
         {
             var repo = _tes.GetActiveRepository();
-            OpenInBrowser(_tes.Project.stargazers_url);
+            OpenInBrowser(_tes.Project.StatisticsUrl);
         }
     }
 }
