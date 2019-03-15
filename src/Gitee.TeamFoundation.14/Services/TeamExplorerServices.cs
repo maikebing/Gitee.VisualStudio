@@ -26,6 +26,10 @@ namespace Gitee.TeamFoundation
         [Import]
         private IWebService _web;
 
+
+        [Import]
+        private IStorage _storage  ;
+
         /// <summary>
         /// This MEF export requires specific versions of TeamFoundation. ITeamExplorerNotificationManager is declared here so
         /// that instances of this type cannot be created if the TeamFoundation dlls are not available
@@ -133,7 +137,7 @@ namespace Gitee.TeamFoundation
 
         public Project Project { get; private set; }
 
-        public bool IsGiteeRepo()
+        public async System.Threading.Tasks.Task<bool> IsGiteeRepoAsync()
         {
             var repo = GetActiveRepository();
             if (repo == null)
@@ -144,16 +148,16 @@ namespace Gitee.TeamFoundation
             var path = repo.Path;
             var url = _git.GetRemote(path);
 
-            if (url == null)
+            if (url == null  || !_storage.IsLogined ||  !url.ToLower().StartsWith("https://gitee.com"))
             {
+                ShowMessage("非码云项目或未登录！");
                 return false;
             }
-
             if (Project == null || !string.Equals(Project.Url, url, StringComparison.OrdinalIgnoreCase))
             {
                 try
                 {
-                    var projects = _web.GetProjects();
+                    var projects = await _web.GetProjectsAsync();
 
                     foreach (var project in projects)
                     {
@@ -164,13 +168,14 @@ namespace Gitee.TeamFoundation
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    ShowMessage($"加载码云项目时遇到异常:{ex.Message}");
                     // Ignore
                 }
             }
 
-            return url.IndexOf("https://git.oschina.net") == 0;
+            return url.IndexOf("https://gitee.com") == 0;
         }
     }
 }

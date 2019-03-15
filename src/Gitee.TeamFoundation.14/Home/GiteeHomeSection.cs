@@ -1,8 +1,10 @@
 ﻿using Gitee.TeamFoundation.Views;
 using Gitee.VisualStudio.Shared;
+using Gitee.VisualStudio.Shared.Helpers;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -23,8 +25,28 @@ namespace Gitee.TeamFoundation.Home
         public override void Initialize(object sender, SectionInitializeEventArgs e)
         {
             base.Initialize(sender, e);
+            var gitExt = ServiceProvider.GetService<Microsoft.VisualStudio.TeamFoundation.Git.Extensibility.IGitExt>();
+            gitExt.PropertyChanged += GitExt_PropertyChanged;
+        }
+        private void GitExt_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ActiveRepositories")
+            {
+                this.Refresh();
+            }
+        }
+        public override void Refresh()
+        {
+            Task.Run(() =>
+            {
+                return _tes.IsGiteeRepoAsync();
 
-            IsVisible = _tes.IsGiteeRepo();
+            }).ContinueWith(async (Task<bool> r) =>
+            {
+                await ThreadingHelper.SwitchToMainThreadAsync();
+                IsVisible = await r;
+            }); ;
+      
         }
 
         protected override ITeamExplorerSection CreateViewModel(SectionInitializeEventArgs e)

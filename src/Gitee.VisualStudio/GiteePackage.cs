@@ -348,6 +348,7 @@ namespace Gitee.VisualStudio
         }
         IVsTextView OpenDocument(string fullPath)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var logicalView = VSConstants.LOGVIEWID.TextView_guid;
             IVsUIHierarchy hierarchy;
             uint itemID;

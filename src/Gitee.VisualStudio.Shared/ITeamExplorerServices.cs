@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Gitee.VisualStudio.Shared
@@ -22,7 +23,7 @@ namespace Gitee.VisualStudio.Shared
         void ClearNotifications();
         RepositoryInfo GetActiveRepository();
         string GetSolutionPath();
-        bool IsGiteeRepo();
+        Task<bool> IsGiteeRepoAsync();
 
         Project Project { get; }
     }

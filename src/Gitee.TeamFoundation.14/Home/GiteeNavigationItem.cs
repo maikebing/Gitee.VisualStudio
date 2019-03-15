@@ -2,6 +2,7 @@
 using Gitee.VisualStudio.Shared.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace Gitee.TeamFoundation.Home
@@ -32,12 +33,17 @@ namespace Gitee.TeamFoundation.Home
 
         public override void Invalidate()
         {
-            IsVisible = _tes.IsGiteeRepo() && _tes.Project != null;
+            Task.Run(async () =>
+            {
+                return await _tes.IsGiteeRepoAsync() && _tes.Project != null;
+            }).ContinueWith(async (Task<bool> b) =>
+            {
+                IsVisible = await b;
+            }); ;
         }
 
         protected void OpenInBrowser(string endpoint)
         {
-            var user = _storage.GetUser();
             _shell.OpenUrl(endpoint);
         }
     }

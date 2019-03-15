@@ -197,7 +197,7 @@
       <Name>Gitee.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\Gitee.VisualStudio.Shared\Gitee.VisualStudio.Shared.csproj">
-      <Project>{C3150B82-8E79-4FF6-A9FF-E361C108384F}</Project>
+      <Project>{c3150b82-8e79-4ff6-a9ff-e361c108384f}</Project>
       <Name>Gitee.VisualStudio.Shared</Name>
     </ProjectReference>
   </ItemGroup>

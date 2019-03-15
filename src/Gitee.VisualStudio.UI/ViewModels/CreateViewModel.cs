@@ -160,16 +160,16 @@ namespace Gitee.VisualStudio.UI.ViewModels
             string clonePath = null;
             IsBusy = true;
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 try
                 {
-                    result = _web.CreateProject(Name, Description, IsPrivate);
+                    result = await _web.CreateProjectAsync(Name, Description, IsPrivate);
                     if (result.Project != null)
                     {
                         clonePath = System.IO.Path.Combine(Path, result.Project.Name);
 
-                        InitialCommit(result.Project.Url);
+                       await  InitialCommitAsync(result.Project.Url);
                     }
                 }
                 catch (Exception ex)
@@ -203,11 +203,10 @@ namespace Gitee.VisualStudio.UI.ViewModels
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private void InitialCommit(string url)
+        private async Task InitialCommitAsync(string url)
         {
-            var user = _storage.GetUser();
+            var user = await _storage.GetUserAsync();
             var password = _storage.GetPassword();
-
             _git.PushInitialCommit(user.Username, user.Email, password, url, SelectedGitIgnore, SelectedLicense);
         }
 

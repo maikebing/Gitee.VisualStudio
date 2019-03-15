@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Gitee.VisualStudio.Shared
 {
     public interface IStorage
     {
         bool IsLogined { get; }
-        User GetUser();
+        Task<User> GetUserAsync();
 
         string GetPassword();
 

@@ -25,9 +25,9 @@ namespace Gitee.VisualStudio.Services
         [Import]
         private IStorage _storage;
 
-        public IReadOnlyList<Project> GetProjects()
+        public async Task<IReadOnlyList<Project>> GetProjectsAsync()
         {
-            var user = _storage.GetUser();
+            var user = await _storage.GetUserAsync();
             if (user == null)
             {
                 throw new UnauthorizedAccessException("Not login yet");
@@ -38,7 +38,7 @@ namespace Gitee.VisualStudio.Services
             var page = 1;
             while (true)
             {
-                var projects = user.Session.GetReposAsync(page).GetAwaiter().GetResult();
+                var projects = await user.Session.GetReposAsync(page);
                 if (!projects.Any())
                 {
                     break;
@@ -72,9 +72,9 @@ namespace Gitee.VisualStudio.Services
             }
         }
 
-        public CreateResult CreateProject(string name, string description, bool isPrivate)
+        public async Task<CreateResult> CreateProjectAsync(string name, string description, bool isPrivate)
         {
-            var user = _storage.GetUser();
+            var user = await _storage.GetUserAsync();
             if (user == null)
             {
                 throw new UnauthorizedAccessException("Not login yet");

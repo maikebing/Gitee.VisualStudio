@@ -113,9 +113,7 @@ namespace Gitee.TeamFoundation.Connect
        
         public override void Refresh()
         {
-            
             ((View as ConnectSectionView).DataContext as ConnectSectionViewModel).Refresh();
-            IsVisible = true;
           base.Refresh();
         }
 

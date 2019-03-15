@@ -112,10 +112,23 @@ namespace Gitee.Api
         /// <param name="token"></param>
         /// <see cref="https://gitee.com/oauth/token?grant_type=refresh_token&refresh_token={refresh_token}"/>
         /// <returns></returns>
-        public static async Task<Session> RefreshToken(TokenDto token)
+        public static async Task<Session> RefreshToken(string refresh_token)
         {
             var _session = new Session();
-            _session.Token = await _session.Request<TokenDto>("../oauth/token", new { grant_type = "refresh_token", token.refresh_token}, Method.POST);
+            _session.Token = await _session.Request<TokenDto>("../oauth/token", new { grant_type = "refresh_token",  refresh_token}, Method.POST);
+            _session.Client = new Client(new HttpClient());
+            _session.Client.BaseUrl = _session.BaseURL;
+            return _session;
+        }
+        /// <summary>
+        /// 根据缓存的 token信息继续使用， 如果没过期的话
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static Session ContinueByToken(string refresh_token, string access_token, DateTime exp)
+        {
+            var _session = new Session();
+            _session.Token = new TokenDto() { access_token = access_token, refresh_token = refresh_token, expires_in = (int)exp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds };
             _session.Client = new Client(new HttpClient());
             _session.Client.BaseUrl = _session.BaseURL;
             return _session;

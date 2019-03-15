@@ -23,7 +23,7 @@ namespace Gitee.VisualStudio.Shared
     public class Project 
     {
         public  bool has_wiki =>Repo.has_wiki;
-        public  string Url => Repo.Url;
+        public  string Url => $"{Repo.html_url}.git";
         public   string Name =>Repo.Name;
 
         public Gitee.Api.Dto.Repo Repo { get; set; }
@@ -66,7 +66,7 @@ namespace Gitee.VisualStudio.Shared
     public interface IWebService
     {
         User Login(string email, string password);
-        IReadOnlyList<Project> GetProjects();
-        CreateResult CreateProject(string name, string description, bool isPrivate);
+        Task<IReadOnlyList<Project>> GetProjectsAsync();
+        Task<CreateResult> CreateProjectAsync(string name, string description, bool isPrivate);
     }
 }
