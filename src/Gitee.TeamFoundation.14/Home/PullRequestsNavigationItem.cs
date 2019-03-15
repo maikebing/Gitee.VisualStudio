@@ -25,7 +25,7 @@ namespace Gitee.TeamFoundation.Home
         {
             base.Invalidate();
 
-            IsVisible = IsVisible && _tes.Project != null && _tes.Project.IsPullRequestsEnabled;
+            IsVisible = IsVisible && _tes.Project != null && _tes.Project.PullRequestsEnabled;
         }
 
         protected override void SetDefaultColors()
@@ -35,7 +35,7 @@ namespace Gitee.TeamFoundation.Home
 
         public override void Execute()
         {
-            OpenInBrowser("pulls");
+            OpenInBrowser(_tes.Project.PullsUrl);
         }
     }
 }

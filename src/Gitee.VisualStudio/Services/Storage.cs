@@ -4,6 +4,10 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.ComponentModel.Composition;
 using System.IO;
+using Gitee.Api;
+using System.Threading.Tasks;
+using User = Gitee.VisualStudio.Shared.User;
+using Gitee.VisualStudio.Helpers;
 
 namespace Gitee.VisualStudio.Services
 {
@@ -12,7 +16,7 @@ namespace Gitee.VisualStudio.Services
     public class Storage : IStorage
     {
         private static readonly string _path;
-        private User _user;
+        private Shared.User _user;
 
         static Storage()
         {
@@ -20,21 +24,39 @@ namespace Gitee.VisualStudio.Services
         }
 
         private bool _isChecked;
+        private DateTime lastcheck = DateTime.MinValue;
         public bool IsLogined
         {
             get
             {
                 lock (_path)
                 {
-                    if (!_isChecked)
-                    {
-                        LoadUser();
 
+                    if (!_isChecked && DateTime.Now.Subtract(lastcheck).TotalSeconds > 5  )
+                    {
                         _isChecked = true;
+                        Task.Run(() => LoadUserAsync()).ContinueWith(task =>
+                        {
+                            if (task.IsCompleted)
+                            {
+                                lastcheck = DateTime.Now;
+                            }
+                            if (task.IsFaulted)
+                            {
+                                if (task.Exception != null && task.Exception.InnerException != null)
+                                {
+                                    OutputWindowHelper.ExceptionWriteLine($"Gitee4VS LoadUserAsync  IsFaulted {task.Exception.Message};{ task.Exception.InnerException.Message}.", task.Exception);
+                                }
+                                if (task.Exception != null && task.Exception.InnerException == null)
+                                {
+                                    OutputWindowHelper.ExceptionWriteLine($"Gitee4VS LoadUserAsync  IsFaulted {task.Exception.Message}.", task.Exception);
+                                }
+                            }
+                            _isChecked = false;
+                        });
                     }
                 }
-
-                return _user != null && _user.Token != null;
+                return _user != null && _user.Session != null;
             }
         }
 
@@ -50,70 +72,67 @@ namespace Gitee.VisualStudio.Services
                     : null;
             }
         }
+     
 
-        private string GetToken()
+        private (string access_token,DateTime exp,string refresh_token,string username) GetAccessToken()
         {
-            var key = "token:https://gitee.com";
-
-            using (var credential = new Credential())
+            string _access_tokenken = null;
+            string _refresh_token = null;
+            string _username = null;
+            DateTime exp = DateTime.MinValue;
+            try
             {
-                credential.Target = key;
-                return credential.Load()
-                    ? credential.Password
-                    : null;
+                var key = "access_token:https://gitee.com";
+            
+                using (var credential = new Credential())
+                {
+                    credential.Target = key;
+                    if (credential.Load())
+                    {
+                        if (DateTime.TryParseExact(credential.Description, "yyyy-MM-dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out exp))
+                        {
+                            if (DateTime.Now < exp)
+                            {
+                                _access_tokenken = credential.Password;
+                            }
+                        }
+                        _username = credential.Username;
+                    }
+                }
+                var keyref = "refresh_token:https://gitee.com";
+                using (var credential = new Credential())
+                {
+                    credential.Target = keyref;
+                    _refresh_token = credential.Load()
+                        ? credential.Password
+                        : null;
+                }
             }
+            catch (Exception ex)
+            {
+                throw new Exception("未能加载gitee的token信息，需要重新登录。");
+            }
+            return (_access_tokenken, exp, _refresh_token, _username);
         }
 
-        public User GetUser()
+        public async Task<Shared.User> GetUserAsync()
         {
             if (_user != null)
             {
                 return _user;
             }
-
-            LoadUser();
-
+            await LoadUserAsync();
             return _user;
         }
 
         public void SaveUser(User user, string password)
         {
             SavePassword(user.Email, password);
-            SaveToken(user.Email, user.Token);
-
-            SaveUserToLocal(user);
-
+            SaveToken(user);
             _user = user;
         }
 
-        private void SaveUserToLocal(User user)
-        {
-            var serializer = new JsonSerializer();
-            if (File.Exists(_path))
-            {
-                JObject o = null;
-                using (var reader = new JsonTextReader(new StreamReader(_path)))
-                {
-                    o = (JObject)serializer.Deserialize(reader);
-
-                    o["User"] = JToken.FromObject(user);
-                }
-                using (var writer = new JsonTextWriter(new StreamWriter(_path)))
-                {
-                    writer.Formatting = Formatting.Indented;
-                    o.WriteTo(writer);
-                }
-            }
-            else
-            {
-                using (var writer = new JsonTextWriter(new StreamWriter(_path)))
-                {
-                    writer.Formatting = Formatting.Indented;
-                    serializer.Serialize(writer, new { User = user });
-                }
-            }
-        }
-
+  
         private void SavePassword(string email, string password)
         {
             var key = "git:https://gitee.com";
@@ -123,44 +142,85 @@ namespace Gitee.VisualStudio.Services
             }
         }
 
-        private void SaveToken(string email, string token)
+        private void SaveToken(Shared.User user)
         {
-            var key = "token:https://gitee.com";
-            using (var credential = new Credential(email, token, key))
+            var key = "access_token:https://gitee.com";
+            using (var credential = new Credential(user.Username,  user.Session.Token.access_token, key))
+            {
+                credential.Description = user.Session.Token.Expires.ToString("yyyy-MM-dd HH:mm:ss");
+                credential.Save();
+            }
+            var refkey = "refresh_token:https://gitee.com";
+            using (var credential = new Credential(user.Username, user.Session.Token.refresh_token, refkey))
             {
                 credential.Save();
             }
         }
 
-        private void LoadUser()
+        private async Task LoadUserAsync()
         {
-            if (File.Exists(_path))
+            try
             {
-                JObject o = null;
-                using (var reader = new JsonTextReader(new StreamReader(_path)))
+                var token = GetAccessToken();
+                _user = new User();
+                if (string.IsNullOrEmpty(token.access_token) || DateTime.Now > token.exp)
                 {
-                    var serializer = new JsonSerializer();
-
-                    o = (JObject)serializer.Deserialize(reader);
-
-                    var token = o["User"];
-                    if (token != null)
+                    if (!string.IsNullOrEmpty(token.refresh_token))
                     {
-                        _user = token.ToObject<User>();
+                        try
+                        {
+                            _user.Session = await SDK.RefreshToken(token.refresh_token);
+                        }
+                        catch (Exception)
+                        {
+                            _user.Session = null;
+                        }
+                    }
 
-                        _user.Token = GetToken();
+                }
+                else
+                {
+                    _user.Session = SDK.ContinueByToken(token.refresh_token, token.access_token, token.exp);
+                }
+                if (_user.Session != null)
+                {
+                    _user.Username = token.username;
+                    if (_user.Detail == null)
+                    {
+                        _user.Detail = await _user.Session.GetUserAsync();
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _user.Session = null;
+            }
+            try
+            {
+                if (_user.Session == null)
+                {
+                    var key = "git:https://gitee.com";
+                    using (var credential = new Credential())
+                    {
+                        credential.Target = key;
+                        credential.Load();
+                        _user.Username = credential.Username;
+                        _user.Session = await SDK.LoginAsync(credential.Username, credential.Password);
+                        _user.Detail = await _user.Session.GetUserAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("用户登录凭证无效，请重新登陆",ex);
             }
         }
 
         public void Erase()
         {
             _user = null;
-
             EraseCredential("git:https://gitee.com");
             EraseCredential("token:https://gitee.com");
-
             File.Delete(_path);
         }
 

@@ -50,7 +50,7 @@ namespace Gitee.VisualStudio.UI.ViewModels
                 Owner = new Owner
                 {
                     Name = repository.Owner.Name,
-                    Avatar = repository.Owner.Avatar
+                    Avatar = repository.Owner.AvatarUrl
                 };
             }
 

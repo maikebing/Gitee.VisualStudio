@@ -43,8 +43,10 @@ namespace Gitee.TeamFoundation.ViewModels
             _cloneCommand = new DelegateCommand(OnClone);
             _createCommand = new DelegateCommand(OnCreate);
             _openRepositoryCommand = new DelegateCommand<Repository>(OnOpenRepository);
-
-            LoadRepositoriesAsync();
+            if (_storage.IsLogined)
+            {
+                LoadRepositoriesAsync();
+            }
         }
 
         public void OnLogined()
@@ -113,7 +115,10 @@ namespace Gitee.TeamFoundation.ViewModels
             var dialog = _viewFactory.GetView<Dialog>(ViewTypes.Create);
             _shell.ShowDialog(Strings.Common_CreateRepository, dialog);
         }
-
+        public void Refresh()
+        {
+            LoadRepositoriesAsync();
+        }
         private void OnOpenRepository(Repository repo)
         {
             if (repo == null)
@@ -134,11 +139,11 @@ namespace Gitee.TeamFoundation.ViewModels
             IReadOnlyList<Project> remotes = null;
 
             Exception ex = null;
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 try
                 {
-                    remotes = _web.GetProjects();
+                    remotes = await _web.GetProjectsAsync();
                     known = Registry.GetKnownRepositories();
                 }
                 catch (Exception e)
@@ -177,13 +182,17 @@ namespace Gitee.TeamFoundation.ViewModels
                             matched.IsActived = true;
                         }
                     }
-
                     valid.Each(o => Repositories.Add(o));
                 }
                 else if (!(ex is UnauthorizedAccessException))
                 {
                     _teamexplorer.ShowMessage(ex.Message);
                 }
+                else
+                {
+                    _teamexplorer.ShowMessage(ex.Message);
+                } 
+
 
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }

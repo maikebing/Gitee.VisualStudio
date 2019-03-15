@@ -129,17 +129,17 @@ namespace Gitee.VisualStudio.UI.ViewModels
             IEnumerable<Project> loaded = null;
 
             IsBusy = true;
-            Task.Run(() =>
+            Task.Run((Action)(async () =>
             {
                 try
                 {
-                    loaded = LoadRepositories();
+                    loaded = await _web.GetProjectsAsync(); ;
                 }
                 catch (Exception)
                 {
                     error = Strings.CloneView_FailedToLoadProjects;
                 }
-            }).ContinueWith(task =>
+            })).ContinueWith(task =>
             {
                 IsBusy = false;
                 _repositories.Clear();
@@ -168,9 +168,6 @@ namespace Gitee.VisualStudio.UI.ViewModels
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private IReadOnlyList<Project> LoadRepositories()
-        {
-            return _web.GetProjects();
-        }
+     
     }
 }

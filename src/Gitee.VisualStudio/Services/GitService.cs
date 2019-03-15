@@ -138,24 +138,34 @@ namespace Gitee.VisualStudio.Services
 
             using (var repo = new LibGit2Sharp.Repository(path))
             {
-                if (!string.IsNullOrEmpty(license))
+                try
                 {
-                    FillAccessories(fullname, email, path, null, license);
-                    repo.Stage("LICENSE");
+                    if (!string.IsNullOrEmpty(license))
+                    {
+                        FillAccessories(fullname, email, path, null, license);
+                        repo.Stage("LICENSE");
 
-                    // Create the committer's signature and commit
-                    Signature author = new Signature(fullname, email, DateTime.Now);
-                    Signature committer = author;
+                        // Create the committer's signature and commit
+                        Signature author = new Signature(fullname, email, DateTime.Now);
+                        Signature committer = author;
 
-                    // Commit to the repository
-                    Commit commit = repo.Commit($"Use {license}", author, committer);
+                        // Commit to the repository
+                        Commit commit = repo.Commit($"Use {license}", author, committer);
+                    }
                 }
+                catch (Exception)
+                {
 
+                }
+                if (repo.Network.Remotes.Any(r => r.Name == "origin"))
+                {
+                    repo.Network.Remotes.Remove("origin");
+                }
                 repo.Network.Remotes.Add("origin", url);
-                var remote = repo.Network.Remotes["origin"];
+               var remote = repo.Network.Remotes["origin"];
                 var options = new PushOptions();
                 options.CredentialsProvider = (_url, _user, _cred) =>
-                    new UsernamePasswordCredentials { Username = email, Password = password };
+                     new UsernamePasswordCredentials { Username = email, Password = password };
                 repo.Network.Push(remote, @"refs/heads/master", options);
             }
         }

@@ -1,12 +1,14 @@
 ﻿using Gitee.TeamFoundation.ViewModels;
 using Gitee.TeamFoundation.Views;
 using Gitee.VisualStudio.Shared;
+using Gitee.VisualStudio.Shared.Helpers;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.TeamFoundation.Git.Controls.Extensibility;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Gitee.TeamFoundation.Connect
@@ -32,8 +34,8 @@ namespace Gitee.TeamFoundation.Connect
             _viewFactory = viewFactory;
             _web = web;
 
-            messenger.Register("OnLogined", OnLogined);
-            messenger.Register("OnSignOuted", OnSignOuted);
+            messenger.Register("OnLogined", OnLoggedIn);
+            messenger.Register("OnSignOuted", InLoggedOut);
             messenger.Register<string, Repository>("OnClone", OnClone);
             messenger.Register<string>("OnOpenSolution", OnOpenSolution);
         }
@@ -51,8 +53,21 @@ namespace Gitee.TeamFoundation.Connect
         public override void Initialize(object sender, SectionInitializeEventArgs e)
         {
             base.Initialize(sender, e);
+          
+            var gitExt = ServiceProvider.GetService<Microsoft.VisualStudio.TeamFoundation.Git.Extensibility.IGitExt>();
+            gitExt.PropertyChanged += GitExt_PropertyChanged;
+        }
 
-            IsVisible = _storage.IsLogined;
+        private void GitExt_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ActiveRepositories")
+            {
+                Task.Run(async () =>
+                {
+                    await ThreadingHelper.SwitchToMainThreadAsync();
+                    Refresh();
+                });
+            }
         }
 
         protected override object CreateView(SectionInitializeEventArgs e)
@@ -62,27 +77,27 @@ namespace Gitee.TeamFoundation.Connect
         protected override void InitializeView(SectionInitializeEventArgs e)
         {
             var view = this.SectionContent as FrameworkElement;
-
             if (view != null)
             {
                 view.DataContext = new ConnectSectionViewModel(_messenger, _shell, _storage, _teamexplorer, _viewFactory, _web);
             }
         }
 
-        public void OnLogined()
+        public void OnLoggedIn()
         {
+            // Added Connect and Sign Up buttons in case user closes the invitation.
             IsVisible = true;
         }
 
-        public void OnSignOuted()
+        public void InLoggedOut()
         {
+            // Added Connect and Sign Up buttons in case user closes the invitation.
             IsVisible = false;
         }
 
         public void OnClone(string url, Repository repository)
         {
             var gitExt = ServiceProvider.GetService<IGitRepositoriesExt>();
-
             gitExt.Clone(url, repository.Path, CloneOptions.RecurseSubmodule);
         }
 
@@ -94,6 +109,15 @@ namespace Gitee.TeamFoundation.Connect
                 x.OpenSolutionViaDlg(path, 1);
             }
         }
+
+       
+        public override void Refresh()
+        {
+            ((View as ConnectSectionView).DataContext as ConnectSectionViewModel).Refresh();
+          base.Refresh();
+        }
+
+        
 
         public override void Dispose()
         {

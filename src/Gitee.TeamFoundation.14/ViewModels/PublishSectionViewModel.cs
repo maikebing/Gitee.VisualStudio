@@ -1,7 +1,6 @@
 ﻿using Gitee.VisualStudio.Shared;
 using Gitee.VisualStudio.Shared.Helpers;
 using Gitee.VisualStudio.Shared.Helpers.Commands;
-using Microsoft.VisualStudio.TeamFoundation.Git.Extensibility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +56,7 @@ namespace Gitee.TeamFoundation.ViewModels
 
         private void LoadResources()
         {
+            Licenses.Clear();
             Licenses.Add(string.Empty, Strings.Common_ChooseALicense);
             SelectedLicense = string.Empty;
             foreach (var line in _git.GetLicenses())
@@ -180,7 +180,7 @@ namespace Gitee.TeamFoundation.ViewModels
         {
             OnPropertyChanged(nameof(ShowLogin));
             OnPropertyChanged(nameof(ShowSignUp));
-
+            LoadResources();
             ShowGetStarted = true;
         }
 
@@ -219,26 +219,27 @@ namespace Gitee.TeamFoundation.ViewModels
 
             IsBusy = true;
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 try
                 {
-                    result = _web.CreateProject(RepositoryName, RepositoryDescription, IsPrivate);
+                    result = await _web.CreateProjectAsync(RepositoryName, RepositoryDescription, IsPrivate);
                     if (result.Project != null)
                     {
                         var activeRepository = _tes.GetActiveRepository();
 
                         var path = activeRepository == null ? _tes.GetSolutionPath() : activeRepository.Path;
 
-                        var user = _storage.GetUser();
+                        var user = await _storage.GetUserAsync();
                         var password = _storage.GetPassword();
 
-                        _git.PushWithLicense(user.Name, user.Email, password, result.Project.Url, path, SelectedLicense);
+                        _git.PushWithLicense(user.Username, user.Email, password, result.Project.Url, path, SelectedLicense);
                     }
                 }
                 catch (Exception ex)
                 {
                     error = ex.Message;
+                    _tes.ShowError(ex.Message);
                 }
             }).ContinueWith(task =>
             {

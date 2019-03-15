@@ -5,66 +5,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Gitee.Api;
 namespace Gitee.VisualStudio.Shared
 {
     public class User
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
-        [JsonProperty("username")]
+
         public string Username { get; set; }
-        [JsonProperty("name")]
-        public string Name { get; set; }
-        [JsonProperty("email")]
-        public string Email { get; set; }
-        [JsonProperty("new_portrait")]
-        public string Avatar { get; set; }
 
-        [JsonProperty("private_token")]
-        public string Token { get; set; }
+        public UserDetail Detail { get; set; }
+        public string Avatar => Detail?.Avatar_url;
 
-        public bool ShouldSerializeToken()
-        {
-            return false;
-        }
+        public Session Session { get; set; }
+        public string Email => Detail?.Email;
     }
 
-    public class Project
+    public class Project 
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
+        public  bool HasWiki =>Repo.has_wiki;
+        public  string Url => $"{Repo.html_url}.git";
+        public   string Name =>Repo.Name;
 
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        public Gitee.Api.Dto.Repo Repo { get; set; }
 
-        [JsonProperty("path_with_namespace")]
-        public string Path { get; set; }
-
-        [JsonProperty("public")]
-        public bool Public { get; set; }
-
-        [JsonProperty("owner")]
-        public User Owner { get; set; }
-
-        [JsonProperty("fork?")]
-        public bool Fork { get; set; }
-
-        [JsonProperty("issues_enabled")]
-        public bool IsIssueEnabled { get; set; }
-
-        [JsonProperty("pull_requests_enabled")]
-        public bool IsPullRequestsEnabled { get; set; }
-
-        [JsonProperty("wiki_enabled")]
-        public bool IsWikiEnabled { get; set; }
-
-        public string Url
-        {
-            get { return $"https://gitee.com/{Path}.git"; }
-        }
-
-        [JsonIgnore]
+       [JsonIgnore]
         public string LocalPath { get; set; }
 
         [JsonIgnore]
@@ -72,12 +36,25 @@ namespace Gitee.VisualStudio.Shared
         {
             get
             {
-                return Public ? Octicon.@lock
-                    : Fork
+                return Repo.IsPublic ? Octicon.@lock
+                    : Repo.fork
                     ? Octicon.repo_forked
                     : Octicon.repo;
             }
         }
+
+        public bool HasIssues => Repo.has_issues;
+        public string IssuesUrl => $"{Repo.html_url}/issues";
+
+        public  Api.Dto.Owner Owner => Repo.Owner;
+
+        public string PullsUrl => $"{Repo.html_url}/pulls";
+
+        public bool PullRequestsEnabled => Repo.pull_requests_enabled;
+
+        public string ReleasesUrl => $"{Repo.html_url}/attach_files";
+
+        public string StatisticsUrl=> $"{Repo.html_url}/repository/stats/{Repo.default_branch}";
     }
 
     public class CreateResult
@@ -89,7 +66,7 @@ namespace Gitee.VisualStudio.Shared
     public interface IWebService
     {
         User Login(string email, string password);
-        IReadOnlyList<Project> GetProjects();
-        CreateResult CreateProject(string name, string description, bool isPrivate);
+        Task<IReadOnlyList<Project>> GetProjectsAsync();
+        Task<CreateResult> CreateProjectAsync(string name, string description, bool isPrivate);
     }
 }
