@@ -43,18 +43,22 @@ namespace Gitee.VisualStudio.Shared
             }
         }
 
-        public bool HasIssues => Repo.has_issues;
-        public string IssuesUrl => $"{Repo.html_url}/issues";
+        public bool HasIssues => Repo != null ? Repo.has_issues : false;
+        public string IssuesUrl => $"{Repo?.html_url}/issues";
 
-        public  Api.Dto.Owner Owner => Repo.Owner;
+        public Api.Dto.Owner Owner => Repo?.Owner;
 
-        public string PullsUrl => $"{Repo.html_url}/pulls";
+        public string PullsUrl => $"{Repo?.html_url}/pulls";
 
-        public bool PullRequestsEnabled => Repo.pull_requests_enabled;
+        public bool PullRequestsEnabled => Repo != null ? Repo.pull_requests_enabled : false;
 
-        public string ReleasesUrl => $"{Repo.html_url}/attach_files";
+        public string ReleasesUrl => $"{Repo?.html_url}/attach_files";
 
-        public string StatisticsUrl=> $"{Repo.html_url}/repository/stats/{Repo.default_branch}";
+        public string StatisticsUrl => $"{Repo?.html_url}/repository/stats/{Repo?.default_branch}";
+
+        public string Description => Repo?.Description;
+
+        public string DisplayName => Repo.human_name;
     }
 
     public class CreateResult
