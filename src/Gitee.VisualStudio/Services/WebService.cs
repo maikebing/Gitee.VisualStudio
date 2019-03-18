@@ -54,12 +54,12 @@ namespace Gitee.VisualStudio.Services
             return result;
         }
 
-        public User Login(string username, string password)
+        public async Task<User> LoginAsync(string username, string password)
         {
             try
             {
-                var ses = Gitee.Api.SDK.LoginAsync(username, password).GetAwaiter().GetResult();
-                var userdetail = ses.GetUserAsync().GetAwaiter().GetResult();
+                var ses = await Gitee.Api.SDK.LoginAsync(username, password);
+                var userdetail = await ses.GetUserAsync();
                 var user = new Shared.User() { Detail = userdetail, Session = ses, Username = username };
                 return user;
             }
@@ -84,7 +84,7 @@ namespace Gitee.VisualStudio.Services
 
             try
             {
-                var repo = user.Session.CreateRepoAsync(name, description, isPrivate).GetAwaiter().GetResult();
+                var repo = await user.Session.CreateRepoAsync(name, description, isPrivate);
                 result.Project = new Project()
                 {
                     Repo = repo

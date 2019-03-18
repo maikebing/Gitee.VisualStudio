@@ -15,8 +15,15 @@ namespace Gitee.VisualStudio.Helpers
 
         #region Properties
 
-        private static IVsOutputWindowPane GiteeVSOutputWindowPane =>
-            _giteeVSOutputWindowPane ?? (_giteeVSOutputWindowPane = GetGiteeVsOutputWindowPane());
+        private static IVsOutputWindowPane GiteeVSOutputWindowPane
+        {
+            get
+            {
+                Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
+                return _giteeVSOutputWindowPane ?? (_giteeVSOutputWindowPane = GetGiteeVsOutputWindowPane());
+            }
+        }
+            
 
         #endregion Properties
 
@@ -28,23 +35,26 @@ namespace Gitee.VisualStudio.Helpers
             {
                 message += $": {ex}";
             }
-
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             WriteLine("Diagnostic", message);
         }
 
         internal static void ExceptionWriteLine(string message, Exception ex)
         {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             var exceptionMessage = $"{message}: {ex}";
             WriteLine("Handled Exception", exceptionMessage);
         }
 
         internal static void WarningWriteLine(string message)
         {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             WriteLine("Warning", message);
         }
 
         private static IVsOutputWindowPane GetGiteeVsOutputWindowPane()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var outputWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
             if (outputWindow == null) return null;
 
@@ -59,6 +69,7 @@ namespace Gitee.VisualStudio.Helpers
 
         private static void WriteLine(string category, string message)
         {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             var outputWindowPane = GiteeVSOutputWindowPane;
             if (outputWindowPane != null)
             {

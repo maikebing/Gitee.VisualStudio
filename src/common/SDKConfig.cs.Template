@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Gitee.Api
+{
+    /// <summary>
+    /// 请前往相关页面创建应用获取client_id 和client_secret
+    /// </summary>
+    /// <seealso cref="https://gitee.com/oauth/applications/new"/>
+    [Obsolete("请添加client_id client_secret")]
+    public static class SdkConfig
+    {
+      
+        public static string client_id { get; set; } = "";
+        public static string client_secret { get; set; } = "";
+        public static string username { get; set; } = "";
+        public static string password { get; set; } = "";
+    }
+}

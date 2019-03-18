@@ -8,6 +8,9 @@ using Gitee.Api;
 using System.Threading.Tasks;
 using User = Gitee.VisualStudio.Shared.User;
 using Gitee.VisualStudio.Helpers;
+using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.Shell;
+using Task = System.Threading.Tasks.Task;
 
 namespace Gitee.VisualStudio.Services
 {
@@ -29,34 +32,34 @@ namespace Gitee.VisualStudio.Services
         {
             get
             {
+                var result = _user != null && _user.Session != null && _user.Detail != null && _user.Session.Token!=null;
                 lock (_path)
                 {
-
-                    if (!_isChecked && DateTime.Now.Subtract(lastcheck).TotalSeconds > 5  )
+                    if (!result)
                     {
-                        _isChecked = true;
-                        Task.Run(() => LoadUserAsync()).ContinueWith(task =>
+                        if (!_isChecked)
                         {
-                            if (task.IsCompleted)
+                            _isChecked = true;
+                            Task.Run(() => LoadUserAsync()).ContinueWith(async task =>
                             {
-                                lastcheck = DateTime.Now;
-                            }
-                            if (task.IsFaulted)
-                            {
-                                if (task.Exception != null && task.Exception.InnerException != null)
+                                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                                if (task.IsFaulted)
                                 {
-                                    OutputWindowHelper.ExceptionWriteLine($"Gitee4VS LoadUserAsync  IsFaulted {task.Exception.Message};{ task.Exception.InnerException.Message}.", task.Exception);
+                                    if (task.Exception != null && task.Exception.InnerException != null)
+                                    {
+                                        OutputWindowHelper.ExceptionWriteLine($"Gitee4VS LoadUserAsync  IsFaulted {task.Exception.Message};{ task.Exception.InnerException.Message}.", task.Exception);
+                                    }
+                                    if (task.Exception != null && task.Exception.InnerException == null)
+                                    {
+                                        OutputWindowHelper.ExceptionWriteLine($"Gitee4VS LoadUserAsync  IsFaulted {task.Exception.Message}.", task.Exception);
+                                    }
                                 }
-                                if (task.Exception != null && task.Exception.InnerException == null)
-                                {
-                                    OutputWindowHelper.ExceptionWriteLine($"Gitee4VS LoadUserAsync  IsFaulted {task.Exception.Message}.", task.Exception);
-                                }
-                            }
-                            _isChecked = false;
-                        });
+                                _isChecked = false;
+                            }, TaskScheduler.Default).Forget();
+                        }
                     }
                 }
-                return _user != null && _user.Session != null;
+                return result;
             }
         }
 
@@ -161,6 +164,8 @@ namespace Gitee.VisualStudio.Services
         {
             try
             {
+                Gitee.Api.SDK.client_id = Gitee.Api.SdkConfig.client_id;
+                Gitee.Api.SDK.client_secret = Gitee.Api.SdkConfig.client_secret;
                 var token = GetAccessToken();
                 _user = new User();
                 if (string.IsNullOrEmpty(token.access_token) || DateTime.Now > token.exp)
@@ -170,6 +175,7 @@ namespace Gitee.VisualStudio.Services
                         try
                         {
                             _user.Session = await SDK.RefreshToken(token.refresh_token);
+                            SaveToken(_user);
                         }
                         catch (Exception)
                         {
@@ -206,6 +212,7 @@ namespace Gitee.VisualStudio.Services
                         credential.Load();
                         _user.Username = credential.Username;
                         _user.Session = await SDK.LoginAsync(credential.Username, credential.Password);
+                        SaveToken(_user);
                         _user.Detail = await _user.Session.GetUserAsync();
                     }
                 }

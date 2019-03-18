@@ -53,7 +53,7 @@ namespace Gitee.TeamFoundation.Connect
         public override void Initialize(object sender, SectionInitializeEventArgs e)
         {
             base.Initialize(sender, e);
-          
+
             var gitExt = ServiceProvider.GetService<Microsoft.VisualStudio.TeamFoundation.Git.Extensibility.IGitExt>();
             gitExt.PropertyChanged += GitExt_PropertyChanged;
         }
@@ -74,6 +74,7 @@ namespace Gitee.TeamFoundation.Connect
         {
             return new ConnectSectionView();
         }
+
         protected override void InitializeView(SectionInitializeEventArgs e)
         {
             var view = this.SectionContent as FrameworkElement;
@@ -110,14 +111,11 @@ namespace Gitee.TeamFoundation.Connect
             }
         }
 
-       
         public override void Refresh()
         {
             ((View as ConnectSectionView).DataContext as ConnectSectionViewModel).Refresh();
-          base.Refresh();
+            base.Refresh();
         }
-
-        
 
         public override void Dispose()
         {

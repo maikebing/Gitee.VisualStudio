@@ -2,9 +2,12 @@
 using Gitee.VisualStudio.Shared.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.VisualStudio.PlatformUI;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using Task = System.Threading.Tasks.Task;
 
 namespace Gitee.TeamFoundation.Home
 {
@@ -16,8 +19,6 @@ namespace Gitee.TeamFoundation.Home
         private readonly ITeamExplorerServices _tes;
         private readonly IWebService _web;
 
-        private Project _project;
-        private string _branch;
         private Octicon octicon;
 
         public GiteeNavigationItem(Octicon icon, IGitService git, IShellService shell, IStorage storage, ITeamExplorerServices tes, IWebService web)
@@ -36,6 +37,21 @@ namespace Gitee.TeamFoundation.Home
                 OnThemeChanged();
                 Invalidate();
             };
+            var gitExt = Microsoft.VisualStudio.Shell.ServiceProvider.GlobalProvider.GetService<Microsoft.VisualStudio.TeamFoundation.Git.Extensibility.IGitExt>();
+            gitExt.PropertyChanged += GitExt_PropertyChanged;
+        }
+
+        private void GitExt_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ActiveRepositories")
+            {
+                Task.Run(async () =>
+                {
+                    var isv = _tes.IsGiteeRepo();
+                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                    IsVisible = isv;
+                }).Forget();
+            }
         }
 
         private void OnThemeChanged()
@@ -48,13 +64,7 @@ namespace Gitee.TeamFoundation.Home
 
         public override void Invalidate()
         {
-            Task.Run(async () =>
-            {
-                return await _tes.IsGiteeRepoAsync() && _tes.Project != null;
-            }).ContinueWith(async (Task<bool> b) =>
-            {
-                IsVisible = await b;
-            });
+            IsVisible = _tes.IsGiteeRepo();
         }
 
         protected void OpenInBrowser(string endpoint)

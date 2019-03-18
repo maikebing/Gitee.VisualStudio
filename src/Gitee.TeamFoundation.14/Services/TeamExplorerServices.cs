@@ -2,7 +2,6 @@ using Gitee.TeamFoundation.Sync;
 using Gitee.VisualStudio.Shared;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TeamFoundation.Git.Extensibility;
 using System;
@@ -10,6 +9,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Gitee.TeamFoundation
@@ -18,7 +18,8 @@ namespace Gitee.TeamFoundation
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class TeamExplorerServices : ITeamExplorerServices
     {
-        readonly IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
+#pragma warning disable 0649,0169
 
         [Import]
         private IGitService _git;
@@ -26,9 +27,10 @@ namespace Gitee.TeamFoundation
         [Import]
         private IWebService _web;
 
-
         [Import]
-        private IStorage _storage  ;
+        private IStorage _storage;
+
+#pragma warning restore 0649,0169
 
         /// <summary>
         /// This MEF export requires specific versions of TeamFoundation. ITeamExplorerNotificationManager is declared here so
@@ -36,10 +38,10 @@ namespace Gitee.TeamFoundation
         /// (otherwise we'll have multiple instances of ITeamExplorerServices exports, and that would be Bad(tm))
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        ITeamExplorerNotificationManager manager;
+        private ITeamExplorerNotificationManager manager;
 
         [ImportingConstructor]
-        public TeamExplorerServices([Import(typeof(SVsServiceProvider))] IServiceProvider serviceProvider)
+        public TeamExplorerServices([Import(typeof(Microsoft.VisualStudio.Shell.SVsServiceProvider))] IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider;
         }
@@ -81,6 +83,7 @@ namespace Gitee.TeamFoundation
             manager = serviceProvider.TryGetService<ITeamExplorer>() as ITeamExplorerNotificationManager;
             manager?.ClearNotifications();
         }
+
         public RepositoryInfo GetActiveRepository()
         {
             if (serviceProvider == null)
@@ -101,7 +104,7 @@ namespace Gitee.TeamFoundation
 
             var repo = git.ActiveRepositories.FirstOrDefault();
 
-            if (repo != null && repo.CurrentBranch!=null && !string.IsNullOrEmpty(repo.CurrentBranch.Name))
+            if (repo != null && repo.CurrentBranch != null && !string.IsNullOrEmpty(repo.CurrentBranch.Name))
             {
                 return new RepositoryInfo
                 {
@@ -134,48 +137,47 @@ namespace Gitee.TeamFoundation
             return solutionDir;
         }
 
-
         public Project Project { get; private set; }
+        private static bool isloading = false;
 
-        public async System.Threading.Tasks.Task<bool> IsGiteeRepoAsync()
+        public bool IsGiteeRepo()
         {
             var repo = GetActiveRepository();
             if (repo == null)
             {
                 return false;
             }
-
             var path = repo.Path;
             var url = _git.GetRemote(path);
-
-            if (url == null  || !_storage.IsLogined ||  !url.ToLower().StartsWith("https://gitee.com"))
-            {
-                ShowMessage("非码云项目或未登录！");
-                return false;
-            }
             if (Project == null || !string.Equals(Project.Url, url, StringComparison.OrdinalIgnoreCase))
             {
-                try
+                if (!isloading)
                 {
-                    var projects = await _web.GetProjectsAsync();
+                    Task.Run(async () =>
+                      {
+                          isloading = true;
 
-                    foreach (var project in projects)
-                    {
-                        if (string.Equals(project.Url, url, StringComparison.OrdinalIgnoreCase))
-                        {
-                            Project = project;
-                            break;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ShowMessage($"加载码云项目时遇到异常:{ex.Message}");
-                    // Ignore
+                          try
+                          {
+                              var projects = await _web.GetProjectsAsync();
+                              foreach (var project in projects)
+                              {
+                                  if (string.Equals(project.Url, url, StringComparison.OrdinalIgnoreCase))
+                                  {
+                                      Project = project;
+                                      break;
+                                  }
+                              }
+                          }
+                          catch (Exception ex)
+                          {
+                              ShowMessage($"加载码云项目时遇到异常:{ex.Message}");
+                          }
+                          isloading = false;
+                      });
                 }
             }
-
-            return url.IndexOf("https://gitee.com") == 0;
+            return !string.IsNullOrEmpty(url) && url.ToLower().StartsWith("https://gitee.com");
         }
     }
 }

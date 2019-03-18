@@ -33,20 +33,13 @@ namespace Gitee.TeamFoundation.Home
         {
             if (e.PropertyName == "ActiveRepositories")
             {
-                this.Refresh();
+                Task.Run(async () =>
+                {
+                    var result = _tes.IsGiteeRepo();
+                    await ThreadingHelper.SwitchToMainThreadAsync();
+                    IsVisible = result;
+                });
             }
-        }
-
-        public override void Refresh()
-        {
-            Task.Run(() =>
-            {
-                return _tes.IsGiteeRepoAsync();
-            }).ContinueWith(async (Task<bool> r) =>
-            {
-                await ThreadingHelper.SwitchToMainThreadAsync();
-                IsVisible = await r;
-            }); ;
         }
 
         protected override ITeamExplorerSection CreateViewModel(SectionInitializeEventArgs e)
@@ -55,6 +48,16 @@ namespace Gitee.TeamFoundation.Home
             temp.Title = Strings.Name;
 
             return temp;
+        }
+        public override void Refresh()
+        {
+            base.Refresh();
+            Task.Run(async () =>
+            {
+                var result = _tes.IsGiteeRepo();
+                await ThreadingHelper.SwitchToMainThreadAsync();
+                IsVisible = result;
+            });
         }
 
         protected override object CreateView(SectionInitializeEventArgs e)

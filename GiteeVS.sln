@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
 		README.md = README.md
+		src\common\SDKConfig.cs.Template = src\common\SDKConfig.cs.Template
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gitee.Api.Sandbox", "src\Gitee.API.Sandbox\Gitee.Api.Sandbox.csproj", "{EA541341-A49F-4B7F-B3BD-DD62B0273633}"

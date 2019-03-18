@@ -17,6 +17,13 @@ namespace Gitee.TeamFoundation.Home
            : base(Octicon.attachment, git, shell, storage, tes, ws)
         {
             Text = Strings.Items_Attachments;
+            _tes = tes;
+        }
+
+        public override void Invalidate()
+        {
+            base.Invalidate();
+            IsVisible = IsVisible && _tes.Project != null;
         }
 
         public override void Execute()

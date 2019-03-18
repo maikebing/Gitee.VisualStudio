@@ -1,6 +1,4 @@
-﻿
-
-using Gitee.VisualStudio.Shared;
+﻿using Gitee.VisualStudio.Shared;
 using LibGit2Sharp;
 using System;
 using System.Collections;
@@ -97,12 +95,12 @@ namespace Gitee.VisualStudio.Services
             {
                 if (File.Exists(Path.Combine(path, ".gitignore")))
                 {
-                    repo.Stage(".gitignore");
+                    LibGit2Sharp.Commands.Stage(repo, ".gitignore");
                 }
 
                 if (File.Exists(Path.Combine(path, "LICENSE")))
                 {
-                    repo.Stage("LICENSE");
+                    LibGit2Sharp.Commands.Stage(repo, "LICENSE");
                 }
 
                 // Create the committer's signature and commit
@@ -112,16 +110,6 @@ namespace Gitee.VisualStudio.Services
                 // Commit to the repository
                 Commit commit = repo.Commit("Initial commit", author, committer);
 
-                //var options = new LibGit2Sharp.PushOptions()
-                //{
-                //    CredentialsProvider = (url, usernameFromUrl, types) =>
-                //        new UsernamePasswordCredentials()
-                //        {
-                //            Username = email,
-                //            Password = password
-                //        }
-                //};
-                //repo.Network.Push(repo.Branches["master"], options);
                 repo.Network.Remotes.Add("origin", url);
                 var remote = repo.Network.Remotes["origin"];
                 var options = new PushOptions();
@@ -135,7 +123,6 @@ namespace Gitee.VisualStudio.Services
 
         public void PushWithLicense(string fullname, string email, string password, string url, string path, string license)
         {
-
             using (var repo = new LibGit2Sharp.Repository(path))
             {
                 try
@@ -143,7 +130,7 @@ namespace Gitee.VisualStudio.Services
                     if (!string.IsNullOrEmpty(license))
                     {
                         FillAccessories(fullname, email, path, null, license);
-                        repo.Stage("LICENSE");
+                        LibGit2Sharp.Commands.Stage(repo, "LICENSE");
 
                         // Create the committer's signature and commit
                         Signature author = new Signature(fullname, email, DateTime.Now);
@@ -155,14 +142,13 @@ namespace Gitee.VisualStudio.Services
                 }
                 catch (Exception)
                 {
-
                 }
                 if (repo.Network.Remotes.Any(r => r.Name == "origin"))
                 {
                     repo.Network.Remotes.Remove("origin");
                 }
                 repo.Network.Remotes.Add("origin", url);
-               var remote = repo.Network.Remotes["origin"];
+                var remote = repo.Network.Remotes["origin"];
                 var options = new PushOptions();
                 options.CredentialsProvider = (_url, _user, _cred) =>
                      new UsernamePasswordCredentials { Username = email, Password = password };

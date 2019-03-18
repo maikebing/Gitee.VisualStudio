@@ -39,7 +39,7 @@ namespace Gitee.TeamFoundation.Connect
             Description = Strings.Description;
 
             var assembly = Assembly.GetExecutingAssembly().GetName().Name;
-            var image = new BitmapImage(new Uri($"pack://application:,,,/{assembly};component/Resources/logo.png", UriKind.Absolute));;
+            var image = new BitmapImage(new Uri($"pack://application:,,,/{assembly};component/Resources/logo.png", UriKind.Absolute)); ;
 
             var drawing = new DrawingGroup();
             drawing.Children.Add(new GeometryDrawing

@@ -30,7 +30,7 @@ namespace Gitee.TeamFoundation.Home
 
         public override void Execute()
         {
-            OpenInBrowser(_tes.Project.Url);
+            OpenInBrowser(_tes.Project.WikiUrl);
         }
     }
 }

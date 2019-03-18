@@ -21,6 +21,12 @@ namespace Gitee.TeamFoundation.Home
             Text = Strings.Items_Statistics;
         }
 
+        public override void Invalidate()
+        {
+            base.Invalidate();
+            IsVisible = IsVisible && _tes.Project != null;
+        }
+
         public override void Execute()
         {
             var repo = _tes.GetActiveRepository();

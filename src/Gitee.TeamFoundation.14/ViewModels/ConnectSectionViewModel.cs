@@ -60,6 +60,7 @@ namespace Gitee.TeamFoundation.ViewModels
         }
 
         private Repository _selectedRepository;
+
         public Repository SelectedRepository
         {
             get { return _selectedRepository; }
@@ -67,32 +68,36 @@ namespace Gitee.TeamFoundation.ViewModels
         }
 
         private DelegateCommand _signOutCommand;
+
         public ICommand SignOutCommand
         {
             get { return _signOutCommand; }
         }
 
         private DelegateCommand _cloneCommand;
+
         public ICommand CloneCommand
         {
             get { return _cloneCommand; }
         }
 
         private DelegateCommand _createCommand;
+
         public ICommand CreateCommand
         {
             get { return _createCommand; }
         }
 
         private DelegateCommand<Repository> _openRepositoryCommand;
+
         public ICommand OpenRepositoryCommand
         {
             get { return _openRepositoryCommand; }
         }
 
-        public bool IsRepositoriesVisible
+        public Visibility IsRepositoriesVisible
         {
-            get { return Repositories.Count > 0; }
+            get { return Repositories.Count == 0 ? Visibility.Hidden : (Repositories.Count > 10 ? Visibility.Collapsed : Visibility.Visible); }
         }
 
         private void OnSignOut()
@@ -115,10 +120,12 @@ namespace Gitee.TeamFoundation.ViewModels
             var dialog = _viewFactory.GetView<Dialog>(ViewTypes.Create);
             _shell.ShowDialog(Strings.Common_CreateRepository, dialog);
         }
+
         public void Refresh()
         {
             LoadRepositoriesAsync();
         }
+
         private void OnOpenRepository(Repository repo)
         {
             if (repo == null)
@@ -191,9 +198,7 @@ namespace Gitee.TeamFoundation.ViewModels
                 else
                 {
                     _teamexplorer.ShowMessage(ex.Message);
-                } 
-
-
+                }
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 

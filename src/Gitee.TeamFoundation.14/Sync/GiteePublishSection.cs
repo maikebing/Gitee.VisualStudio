@@ -1,6 +1,7 @@
 ﻿using Gitee.TeamFoundation.ViewModels;
 using Gitee.TeamFoundation.Views;
 using Gitee.VisualStudio.Shared;
+using Gitee.VisualStudio.Shared.Helpers;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using System;
@@ -14,7 +15,6 @@ namespace Gitee.TeamFoundation.Sync
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class GiteePublishSection : TeamExplorerSectionBase
     {
-
         private readonly IMessenger _messenger;
         private readonly IGitService _git;
         private readonly IShellService _shell;
@@ -48,14 +48,26 @@ namespace Gitee.TeamFoundation.Sync
         public override void Initialize(object sender, SectionInitializeEventArgs e)
         {
             base.Initialize(sender, e);
+            var gitExt = ServiceProvider.GetService<Microsoft.VisualStudio.TeamFoundation.Git.Extensibility.IGitExt>();
+            gitExt.PropertyChanged += GitExt_PropertyChanged;
+        }
+
+        private void GitExt_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ActiveRepositories")
+            {
+                Refresh();
+            }
+        }
+        public override void Refresh()
+        {
+            base.Refresh();
             Task.Run(async () =>
             {
-                return await _tes.IsGiteeRepoAsync();
-            }).ContinueWith(async (Task<bool> result) =>
-            {
-                this.IsVisible = await result;
+                var result = _tes.IsGiteeRepo();
+                await ThreadingHelper.SwitchToMainThreadAsync();
+                IsVisible = result;
             });
-
         }
 
         protected override object CreateView(SectionInitializeEventArgs e)
