@@ -219,7 +219,7 @@ namespace Gitee.VisualStudio.Services
             try
             {
                 var repository = new LibGit2Sharp.Repository(path);
-                return repository.Network.Remotes["origin"].Url;
+                return repository.Network.Remotes["origin"]?.Url;
             }
             catch (Exception ex)
             {
