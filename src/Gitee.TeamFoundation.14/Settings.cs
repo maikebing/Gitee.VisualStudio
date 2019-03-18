@@ -2,7 +2,7 @@
 
 namespace Gitee.TeamFoundation
 {
-    static class Settings
+    internal static class Settings
     {
         public const string InvitationSectionId = "44A4CF18-EDAC-4967-A332-8521A5CC0862";
         public const int InvitationSectionPriority = 100;

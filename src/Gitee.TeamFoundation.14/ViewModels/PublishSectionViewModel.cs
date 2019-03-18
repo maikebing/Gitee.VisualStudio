@@ -72,6 +72,7 @@ namespace Gitee.TeamFoundation.ViewModels
         public IDictionary<string, string> Licenses { get; } = new Dictionary<string, string>();
 
         private string _selectedLicense;
+
         public string SelectedLicense
         {
             get { return _selectedLicense; }
@@ -79,6 +80,7 @@ namespace Gitee.TeamFoundation.ViewModels
         }
 
         private bool _isStarted;
+
         public bool IsStarted
         {
             get { return _isStarted; }
@@ -96,6 +98,7 @@ namespace Gitee.TeamFoundation.ViewModels
         }
 
         private bool _showGetStarted;
+
         public bool ShowGetStarted
         {
             get { return _showGetStarted; }
@@ -103,6 +106,7 @@ namespace Gitee.TeamFoundation.ViewModels
         }
 
         private bool _isBusy;
+
         public bool IsBusy
         {
             get { return _isBusy; }
@@ -110,6 +114,7 @@ namespace Gitee.TeamFoundation.ViewModels
         }
 
         private bool _isPrivate;
+
         public bool IsPrivate
         {
             get { return _isPrivate; }
@@ -117,6 +122,7 @@ namespace Gitee.TeamFoundation.ViewModels
         }
 
         private DelegateCommand _loginCommand;
+
         public ICommand LoginCommand
         {
             get
@@ -126,6 +132,7 @@ namespace Gitee.TeamFoundation.ViewModels
         }
 
         private DelegateCommand _signUpCommand;
+
         public ICommand SignUpCommand
         {
             get
@@ -135,6 +142,7 @@ namespace Gitee.TeamFoundation.ViewModels
         }
 
         private DelegateCommand _getStartedCommand;
+
         public ICommand GetStartedCommand
         {
             get
@@ -144,12 +152,14 @@ namespace Gitee.TeamFoundation.ViewModels
         }
 
         private DelegateCommand _publishCommand;
+
         public ICommand PublishCommand
         {
             get { return _publishCommand; }
         }
 
         private string _repositoryName;
+
         public string RepositoryName
         {
             get { return _repositoryName; }
@@ -163,12 +173,12 @@ namespace Gitee.TeamFoundation.ViewModels
         }
 
         private string _repositoryDescription;
+
         public string RepositoryDescription
         {
             get { return _repositoryDescription; }
             set { SetProperty(ref _repositoryDescription, value); }
         }
-
 
         private void OnLogin()
         {

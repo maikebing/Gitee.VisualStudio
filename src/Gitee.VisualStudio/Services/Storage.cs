@@ -8,6 +8,9 @@ using Gitee.Api;
 using System.Threading.Tasks;
 using User = Gitee.VisualStudio.Shared.User;
 using Gitee.VisualStudio.Helpers;
+using Microsoft.VisualStudio.Threading;
+using Microsoft.VisualStudio.Shell;
+using Task = System.Threading.Tasks.Task;
 
 namespace Gitee.VisualStudio.Services
 {
@@ -37,8 +40,9 @@ namespace Gitee.VisualStudio.Services
                         if (!_isChecked)
                         {
                             _isChecked = true;
-                            Task.Run(() => LoadUserAsync()).ContinueWith(task =>
+                            Task.Run(() => LoadUserAsync()).ContinueWith(async task =>
                             {
+                                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                                 if (task.IsFaulted)
                                 {
                                     if (task.Exception != null && task.Exception.InnerException != null)
@@ -51,7 +55,7 @@ namespace Gitee.VisualStudio.Services
                                     }
                                 }
                                 _isChecked = false;
-                            });
+                            }, TaskScheduler.Default).Forget();
                         }
                     }
                 }

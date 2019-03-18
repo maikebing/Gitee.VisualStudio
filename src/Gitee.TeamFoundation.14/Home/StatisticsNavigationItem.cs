@@ -20,6 +20,7 @@ namespace Gitee.TeamFoundation.Home
             _tes = tes;
             Text = Strings.Items_Statistics;
         }
+
         public override void Invalidate()
         {
             base.Invalidate();

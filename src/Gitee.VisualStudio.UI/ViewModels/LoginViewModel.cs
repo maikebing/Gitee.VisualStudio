@@ -115,9 +115,9 @@ namespace Gitee.VisualStudio.UI.ViewModels
             BusyContent = Strings.Common_Loading;
 
             var successed = false;
-            Task.Run(() =>
+            Task.Run(async () =>
             {
-                var user = _web.Login(Email, Password);
+                var user = await _web.LoginAsync(Email, Password);
                 if (user != null)
                 {
                     successed = true;

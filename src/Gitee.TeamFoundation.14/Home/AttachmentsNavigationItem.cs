@@ -19,11 +19,13 @@ namespace Gitee.TeamFoundation.Home
             Text = Strings.Items_Attachments;
             _tes = tes;
         }
+
         public override void Invalidate()
         {
             base.Invalidate();
             IsVisible = IsVisible && _tes.Project != null;
         }
+
         public override void Execute()
         {
             OpenInBrowser(_tes.Project.ReleasesUrl);

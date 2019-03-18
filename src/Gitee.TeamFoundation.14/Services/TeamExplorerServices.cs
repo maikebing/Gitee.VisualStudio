@@ -18,7 +18,8 @@ namespace Gitee.TeamFoundation
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class TeamExplorerServices : ITeamExplorerServices
     {
-        readonly IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
+#pragma warning disable 0649,0169
 
         [Import]
         private IGitService _git;
@@ -26,9 +27,10 @@ namespace Gitee.TeamFoundation
         [Import]
         private IWebService _web;
 
-
         [Import]
-        private IStorage _storage  ;
+        private IStorage _storage;
+
+#pragma warning restore 0649,0169
 
         /// <summary>
         /// This MEF export requires specific versions of TeamFoundation. ITeamExplorerNotificationManager is declared here so
@@ -36,7 +38,7 @@ namespace Gitee.TeamFoundation
         /// (otherwise we'll have multiple instances of ITeamExplorerServices exports, and that would be Bad(tm))
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        ITeamExplorerNotificationManager manager;
+        private ITeamExplorerNotificationManager manager;
 
         [ImportingConstructor]
         public TeamExplorerServices([Import(typeof(Microsoft.VisualStudio.Shell.SVsServiceProvider))] IServiceProvider serviceProvider)
@@ -81,6 +83,7 @@ namespace Gitee.TeamFoundation
             manager = serviceProvider.TryGetService<ITeamExplorer>() as ITeamExplorerNotificationManager;
             manager?.ClearNotifications();
         }
+
         public RepositoryInfo GetActiveRepository()
         {
             if (serviceProvider == null)
@@ -101,7 +104,7 @@ namespace Gitee.TeamFoundation
 
             var repo = git.ActiveRepositories.FirstOrDefault();
 
-            if (repo != null && repo.CurrentBranch!=null && !string.IsNullOrEmpty(repo.CurrentBranch.Name))
+            if (repo != null && repo.CurrentBranch != null && !string.IsNullOrEmpty(repo.CurrentBranch.Name))
             {
                 return new RepositoryInfo
                 {
@@ -134,10 +137,10 @@ namespace Gitee.TeamFoundation
             return solutionDir;
         }
 
-
         public Project Project { get; private set; }
-        static bool isloading = false;
-        public   bool IsGiteeRepo()
+        private static bool isloading = false;
+
+        public bool IsGiteeRepo()
         {
             var repo = GetActiveRepository();
             if (repo == null)
@@ -171,11 +174,10 @@ namespace Gitee.TeamFoundation
                               ShowMessage($"加载码云项目时遇到异常:{ex.Message}");
                           }
                           isloading = false;
-
                       });
                 }
             }
-            return !string.IsNullOrEmpty(url) &&  url.ToLower().StartsWith("https://gitee.com");
+            return !string.IsNullOrEmpty(url) && url.ToLower().StartsWith("https://gitee.com");
         }
     }
 }

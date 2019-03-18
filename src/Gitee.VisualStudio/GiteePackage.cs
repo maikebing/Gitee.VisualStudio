@@ -73,6 +73,7 @@ namespace Gitee.VisualStudio
 
         public int OfficialName(out string pbstrName)
         {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             pbstrName =  GetResourceString("@101");
             return VSConstants.S_OK;
         }
@@ -91,6 +92,7 @@ namespace Gitee.VisualStudio
 
         public  string   GetResourceString(string resourceName)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             string resourceValue;
            
             var resourceManager =  (IVsResourceManager)GetService(typeof(SVsResourceManager));
@@ -112,7 +114,7 @@ namespace Gitee.VisualStudio
 
         private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-           
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             OutputWindowHelper.ExceptionWriteLine("Diagnostics mode caught and marked as handled the following DispatcherUnhandledException raised in Visual Studio", e.Exception);
             e.Handled = true;
         }
@@ -187,6 +189,7 @@ namespace Gitee.VisualStudio
 
         public string GetActiveFilePath()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             string path = "";
             if (DTE != null)
             {
@@ -219,6 +222,7 @@ namespace Gitee.VisualStudio
                         }
                         catch (Exception ex)
                         {
+                            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
                             OutputWindowHelper.WarningWriteLine($"QueryStatus:{command.CommandID.ID},{ex.Message}");
                         }
                         break;
@@ -231,6 +235,7 @@ namespace Gitee.VisualStudio
                         {
                             try
                             {
+                                Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
                                 var git = GitAnalysis.GetBy(GetActiveFilePath());
                                 if (!git.IsDiscoveredGitRepository)
                                 {
@@ -272,6 +277,7 @@ namespace Gitee.VisualStudio
 
         private void ExecuteCommand(object sender, EventArgs e)
         {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             var command = (OleMenuCommand)sender;
             try
             {
@@ -332,6 +338,7 @@ namespace Gitee.VisualStudio
         }
         public void TryOpenFile(string url)
         {
+            Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             Uri uri = new Uri(url);
             using (var git = new GitAnalysis(GetActiveFilePath()))
             {
@@ -366,6 +373,7 @@ namespace Gitee.VisualStudio
 
         public static string GetSolutionDirectory()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var det2 = (DTE2)GetGlobalService(typeof(DTE));
             var path = string.Empty;
             if (det2 != null && det2.Solution != null && det2.Solution.IsOpen)
@@ -402,6 +410,7 @@ namespace Gitee.VisualStudio
 
         Tuple<int, int> GetSelectionLineRange()
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var selection = DTE.ActiveDocument.Selection as TextSelection;
             if (selection != null)
             {

@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Gitee.Api;
+
 namespace Gitee.VisualStudio.Shared
 {
     public class User
     {
-
         public string Username { get; set; }
 
         public UserDetail Detail { get; set; }
@@ -20,15 +20,15 @@ namespace Gitee.VisualStudio.Shared
         public string Email => Detail?.Email;
     }
 
-    public class Project 
+    public class Project
     {
-        public  bool HasWiki =>Repo.has_wiki;
-        public  string Url =>  Repo.html_url;
-        public   string Name =>Repo.Name;
+        public bool HasWiki => Repo.has_wiki;
+        public string Url => Repo.html_url;
+        public string Name => Repo.Name;
 
         public Gitee.Api.Dto.Repo Repo { get; set; }
 
-       [JsonIgnore]
+        [JsonIgnore]
         public string LocalPath { get; set; }
 
         [JsonIgnore]
@@ -42,6 +42,7 @@ namespace Gitee.VisualStudio.Shared
                     : Octicon.repo;
             }
         }
+
         public string GiteeHomeUrl => Repo != null ? (Repo.html_url.ToLower().EndsWith(".git") ? Repo.html_url.Remove(Repo.html_url.Length - 4) : Repo.html_url) : null;
 
         public bool HasIssues => Repo != null ? Repo.has_issues : false;
@@ -61,7 +62,7 @@ namespace Gitee.VisualStudio.Shared
 
         public string DisplayName => Repo.human_name;
 
-        public string WikiUrl=>$"{GiteeHomeUrl}/wikis";
+        public string WikiUrl => $"{GiteeHomeUrl}/wikis";
     }
 
     public class CreateResult
@@ -72,8 +73,10 @@ namespace Gitee.VisualStudio.Shared
 
     public interface IWebService
     {
-        User Login(string email, string password);
+        Task<User> LoginAsync(string username, string password);
+
         Task<IReadOnlyList<Project>> GetProjectsAsync();
+
         Task<CreateResult> CreateProjectAsync(string name, string description, bool isPrivate);
     }
 }
