@@ -12,5 +12,5 @@ namespace Gitee.Api
         public string BaseURL { get; private set; } = "https://gitee.com/api";
         public Client Client { get; set; } = null;
         public TokenDto Token { get; set; } = null;
-     }
+    }
 }
