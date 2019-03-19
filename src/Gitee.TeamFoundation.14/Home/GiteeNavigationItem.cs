@@ -8,6 +8,8 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using Task = System.Threading.Tasks.Task;
+using GlobalServiceProvider = Microsoft.VisualStudio.Shell.ServiceProvider;
+using Microsoft.VisualStudio.TeamFoundation.Git.Extensibility;
 
 namespace Gitee.TeamFoundation.Home
 {
@@ -37,7 +39,7 @@ namespace Gitee.TeamFoundation.Home
                 OnThemeChanged();
                 Invalidate();
             };
-            var gitExt = Microsoft.VisualStudio.Shell.ServiceProvider.GlobalProvider.GetService<Microsoft.VisualStudio.TeamFoundation.Git.Extensibility.IGitExt>();
+            var gitExt = GlobalServiceProvider.GlobalProvider.GetService<IGitExt>();
             gitExt.PropertyChanged += GitExt_PropertyChanged;
         }
 

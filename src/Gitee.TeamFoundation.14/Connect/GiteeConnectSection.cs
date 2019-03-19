@@ -7,12 +7,13 @@ using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.TeamFoundation.Git.Controls.Extensibility;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.TeamFoundation.Git.Extensibility;
 using Microsoft.VisualStudio.Threading;
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Windows;
-
+using GlobalServiceProvider = Microsoft.VisualStudio.Shell.ServiceProvider;
 namespace Gitee.TeamFoundation.Connect
 {
     [TeamExplorerSection(Settings.ConnectSectionId, TeamExplorerPageIds.Connect, Settings.ConnectSectionPriority)]
@@ -40,7 +41,7 @@ namespace Gitee.TeamFoundation.Connect
             messenger.Register("OnSignOuted", OnSignOuted);
             messenger.Register<string, Repository>("OnClone", OnClone);
             messenger.Register<string>("OnOpenSolution", OnOpenSolution);
-            var gitExt = Microsoft.VisualStudio.Shell.ServiceProvider.GlobalProvider.GetService<Microsoft.VisualStudio.TeamFoundation.Git.Extensibility.IGitExt>();
+            IGitExt gitExt = GlobalServiceProvider.GlobalProvider.GetService<IGitExt>();
             gitExt.PropertyChanged += GitExt_PropertyChanged;
         }
         private void GitExt_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

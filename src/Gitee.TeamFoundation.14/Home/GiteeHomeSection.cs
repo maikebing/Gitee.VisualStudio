@@ -3,6 +3,7 @@ using Gitee.VisualStudio.Shared;
 using Gitee.VisualStudio.Shared.Helpers;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
+using Microsoft.VisualStudio.TeamFoundation.Git.Extensibility;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,7 +26,7 @@ namespace Gitee.TeamFoundation.Home
         public override void Initialize(object sender, SectionInitializeEventArgs e)
         {
             base.Initialize(sender, e);
-            var gitExt = ServiceProvider.GetService<Microsoft.VisualStudio.TeamFoundation.Git.Extensibility.IGitExt>();
+            var gitExt = ServiceProvider.GetService<IGitExt>();
             gitExt.PropertyChanged += GitExt_PropertyChanged;
         }
 
