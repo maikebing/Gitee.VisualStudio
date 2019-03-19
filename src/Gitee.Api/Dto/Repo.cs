@@ -280,7 +280,7 @@ namespace Gitee.Api.Dto
         /// <summary>
         /// 
         /// </summary>
-        public string parent { get; set; }
+       // public string parent { get; set; }
         /// <summary>
         /// 
         /// </summary>

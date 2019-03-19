@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="json1.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\common\SDKConfig.cs" Link="SDKConfig.cs" />
   </ItemGroup>
 
