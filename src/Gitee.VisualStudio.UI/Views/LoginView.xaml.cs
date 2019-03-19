@@ -25,5 +25,12 @@ namespace Gitee.VisualStudio.UI
             get { return PasswordTextBox.Text; }
             set { PasswordTextBox.Text = value; }
         }
+        private void PasswordTextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                SignInButton.Command.Execute(null);
+            }
+        }
     }
 }
