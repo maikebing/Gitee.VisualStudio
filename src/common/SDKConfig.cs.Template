@@ -14,8 +14,8 @@ namespace Gitee.Api
     public static class SdkConfig
     {
       
-        public static string client_id { get; set; } = "";
-        public static string client_secret { get; set; } = "";
+        public static string client_id { get; set; } = "<client_id>";
+        public static string client_secret { get; set; } = "<client_secret>";
         public static string username { get; set; } = "";
         public static string password { get; set; } = "";
     }
