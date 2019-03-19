@@ -345,9 +345,9 @@ namespace Gitee.Api.Dto
         public string updated_at { get; set; }
 
         /// <summary>
-        ///
+        /// 暂时不使用不解析
         /// </summary>
-       // public string parent { get; set; }
+        // public string parent { get; set; }
         /// <summary>
         ///
         /// </summary>
