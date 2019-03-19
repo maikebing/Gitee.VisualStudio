@@ -86,6 +86,7 @@
                                     VerticalAlignment="Top"
                                     Icon="/Gitee.VisualStudio.UI;component/Resources/Images/password.png"
                                     Wartermark="{x:Static shared:Strings.Login_Password}"
+                                      KeyDown="PasswordTextBox_KeyDown"
                                     Text="{Binding Password, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" Grid.ColumnSpan="2" />
             <Button Style="{StaticResource LinkButton}"
                     Grid.Row="2"
