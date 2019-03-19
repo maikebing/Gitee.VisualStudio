@@ -48,10 +48,20 @@ namespace Gitee.TeamFoundation.ViewModels
             _getStartedCommand = new DelegateCommand(OnGetStarted);
             _publishCommand = new DelegateCommand(OnPublish, CanPublish);
 
-            ShowGetStarted = storage.IsLogined;
-
-            //IsStarted = true;
             LoadResources();
+        }
+
+        public void Refresh()
+        {
+            if (!string.IsNullOrEmpty(_tes.GetSolutionPath()))
+            {
+                var url = _git?.GetRemote(_tes.GetSolutionPath());
+                ShowGetStarted = string.IsNullOrEmpty(url) || !url.ToLower().StartsWith("https://gitee.com");
+            }
+            else
+            {
+                ShowGetStarted = false;
+            }
         }
 
         private void LoadResources()

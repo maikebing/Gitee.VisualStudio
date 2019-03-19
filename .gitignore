@@ -242,3 +242,4 @@ GitHubVS.sln.DotSettings
 **/generated/*.cs
 /src/Gitee.Api/SDKConfig.cs
 /src/common/SDKConfig.cs
+/src/Gitee.API.Sandbox/json1.json

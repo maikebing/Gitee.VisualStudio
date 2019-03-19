@@ -1,7 +1,9 @@
 ﻿using Gitee.TeamFoundation.Services;
 using Gitee.VisualStudio.Shared;
-using Gitee.VisualStudio.Shared.Helpers;
 using Gitee.VisualStudio.Shared.Helpers.Commands;
+using Gitee.VisualStudio.Shared.Helpers;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Task = System.Threading.Tasks.Task;
 
 namespace Gitee.TeamFoundation.ViewModels
 {
@@ -48,7 +51,7 @@ namespace Gitee.TeamFoundation.ViewModels
                 LoadRepositoriesAsync();
             }
         }
-
+        public Visibility Visibility { get; set; }
         public void OnLogined()
         {
             LoadRepositoriesAsync();
@@ -146,60 +149,58 @@ namespace Gitee.TeamFoundation.ViewModels
             IReadOnlyList<Project> remotes = null;
 
             Exception ex = null;
-            Task.Run(async () =>
-            {
-                try
-                {
-                    remotes = await _web.GetProjectsAsync();
-                    known = Registry.GetKnownRepositories();
-                }
-                catch (Exception e)
-                {
-                    ex = e;
-                }
-            }).ContinueWith(task =>
-            {
-                if (ex == null)
-                {
-                    Repositories.Clear();
+            Task.Run( async () =>
+           {
+               try
+               {
+                   remotes = await _web.GetProjectsAsync();
+                   known = Registry.GetKnownRepositories();
+               }
+               catch (Exception e)
+               {
+                   ex = e;
+               }
+           }).ContinueWith(async tsk =>
+           {
+               await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+               if (ex == null)
+               {
+                   Repositories.Clear();
 
-                    var activeRepository = _teamexplorer.GetActiveRepository();
+                   var activeRepository = _teamexplorer.GetActiveRepository();
 
-                    var valid = new List<Repository>();
+                   var valid = new List<Repository>();
 
-                    if (known != null)
-                    {
-                        foreach (var k in known)
-                        {
-                            var r = remotes.FirstOrDefault(o => o.Name == k.Name);
-                            if (r != null)
-                            {
-                                k.Icon = r.Icon;
+                   if (known != null)
+                   {
+                       foreach (var k in known)
+                       {
+                           var r = remotes.FirstOrDefault(o => o.Name == k.Name);
+                           if (r != null)
+                           {
+                               k.Icon = r.Icon;
 
-                                valid.Add(k);
-                            }
-                        }
-                    }
+                               valid.Add(k);
+                           }
+                       }
+                   }
 
-                    if (activeRepository != null)
-                    {
-                        var matched = valid.FirstOrDefault(o => string.Equals(o.Path, activeRepository.Path, StringComparison.OrdinalIgnoreCase));
-                        if (matched != null)
-                        {
-                            matched.IsActived = true;
-                        }
-                    }
-                    valid.Each(o => Repositories.Add(o));
-                }
-                else if (!(ex is UnauthorizedAccessException))
-                {
-                    _teamexplorer.ShowMessage(ex.Message);
-                }
-                else
-                {
-                    _teamexplorer.ShowMessage(ex.Message);
-                }
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+                   if (activeRepository != null)
+                   {
+                       var matched = valid.FirstOrDefault(o => string.Equals(o.Path, activeRepository.Path, StringComparison.OrdinalIgnoreCase));
+                       if (matched != null)
+                       {
+                           matched.IsActived = true;
+                       }
+                   }
+
+                   valid.Each(o => Repositories.Add(o));
+               }
+               else if (!(ex is UnauthorizedAccessException))
+               {
+                   _teamexplorer.ShowMessage(ex.Message);
+               }
+           },TaskScheduler.Default).Forget();
         }
 
         public void OnRepositoryCloned(string url, Repository repository)

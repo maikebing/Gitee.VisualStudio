@@ -50,6 +50,7 @@ namespace Gitee.TeamFoundation.Sync
             base.Initialize(sender, e);
             var gitExt = ServiceProvider.GetService<Microsoft.VisualStudio.TeamFoundation.Git.Extensibility.IGitExt>();
             gitExt.PropertyChanged += GitExt_PropertyChanged;
+            Refresh();
         }
 
         private void GitExt_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -59,15 +60,17 @@ namespace Gitee.TeamFoundation.Sync
                 Refresh();
             }
         }
+
         public override void Refresh()
         {
-            base.Refresh();
             Task.Run(async () =>
             {
-                var result = _tes.IsGiteeRepo();
+                var result = !_tes.IsGiteeRepo();
                 await ThreadingHelper.SwitchToMainThreadAsync();
                 IsVisible = result;
+                ((SectionContent as FrameworkElement)?.DataContext as PublishSectionViewModel)?.Refresh();
             });
+            base.Refresh();
         }
 
         protected override object CreateView(SectionInitializeEventArgs e)
