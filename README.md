@@ -1,6 +1,6 @@
 # 码云的 Visual Studio 扩展
 
-提示 Visual Studio 2013,2015,2017 均有社区版，码云的 Visual Studio 扩展支持 2017 社区版，专业版，企业版。
+提示 Visual Studio  2015,2017,2019 均有社区版，码云的 Visual Studio 扩展支持 2015、2017、2019、的社区版、专业版、企业版。
 
 社区版基本功能和专业版一致，前提是只能用于非商业项目和开源项目。Express 版可以用于商业项目，也可以只下载 Visual Studio C++ Build Tools ，这个可以无限制使用。
 
@@ -8,7 +8,7 @@
 
 Go [https://marketplace.visualstudio.com/items?itemName=Gitee.GiteeVisualStudio](https://marketplace.visualstudio.com/items?itemName=Gitee.GiteeVisualStudio)
 
-注：Gitee.VisualStudio 只支持 Visual Studio 2015/2017。
+注：Gitee.VisualStudio 只支持 Visual Studio 2015/2017/2019。
 
 ## 使用
 
