@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
+    <PackageProjectUrl>https://gitee.com/GitGroup/Gitee.VisualStudio/tree/master/src/Gitee.Api</PackageProjectUrl>
+    <PackageIconUrl>https://gitee.com/logo_icon.png</PackageIconUrl>
+    <RepositoryUrl>https://gitee.com/GitGroup/Gitee.VisualStudio</RepositoryUrl>
+    <PackageLicenseUrl>https://gitee.com/GitGroup/Gitee.VisualStudio/raw/master/LICENSE</PackageLicenseUrl>
+    <Description>gitee.com 的.Net SDK</Description>
+    <PackageTags>gitee,git</PackageTags>
+    <Authors>maikebing</Authors>
+    <Company>Gitee.com</Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
