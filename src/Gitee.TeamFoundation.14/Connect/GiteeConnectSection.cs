@@ -5,7 +5,9 @@ using Gitee.VisualStudio.Shared.Helpers;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.TeamFoundation.Git.Controls.Extensibility;
+using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
@@ -34,10 +36,29 @@ namespace Gitee.TeamFoundation.Connect
             _viewFactory = viewFactory;
             _web = web;
 
-            messenger.Register("OnLogined", OnLoggedIn);
-            messenger.Register("OnSignOuted", InLoggedOut);
+            messenger.Register("OnLogined", OnLogined);
+            messenger.Register("OnSignOuted", OnSignOuted);
             messenger.Register<string, Repository>("OnClone", OnClone);
             messenger.Register<string>("OnOpenSolution", OnOpenSolution);
+            var gitExt = Microsoft.VisualStudio.Shell.ServiceProvider.GlobalProvider.GetService<Microsoft.VisualStudio.TeamFoundation.Git.Extensibility.IGitExt>();
+            gitExt.PropertyChanged += GitExt_PropertyChanged;
+        }
+        private void GitExt_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "ActiveRepositories")
+            {
+                System.Threading.Tasks.Task.Run(async () =>
+                {
+                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                    Refresh();
+                }).Forget();
+            }
+        }
+        public override void Refresh()
+        {
+
+            ((View as ConnectSectionView).DataContext as ConnectSectionViewModel).Refresh();
+            base.Refresh();
         }
 
         protected override ITeamExplorerSection CreateViewModel(SectionInitializeEventArgs e)
@@ -54,20 +75,7 @@ namespace Gitee.TeamFoundation.Connect
         {
             base.Initialize(sender, e);
 
-            var gitExt = ServiceProvider.GetService<Microsoft.VisualStudio.TeamFoundation.Git.Extensibility.IGitExt>();
-            gitExt.PropertyChanged += GitExt_PropertyChanged;
-        }
-
-        private void GitExt_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "ActiveRepositories")
-            {
-                Task.Run(async () =>
-                {
-                    await ThreadingHelper.SwitchToMainThreadAsync();
-                    Refresh();
-                });
-            }
+            IsVisible = _storage.IsLogined;
         }
 
         protected override object CreateView(SectionInitializeEventArgs e)
@@ -84,15 +92,13 @@ namespace Gitee.TeamFoundation.Connect
             }
         }
 
-        public void OnLoggedIn()
+        public void OnLogined()
         {
-            // Added Connect and Sign Up buttons in case user closes the invitation.
             IsVisible = true;
         }
 
-        public void InLoggedOut()
+        public void OnSignOuted()
         {
-            // Added Connect and Sign Up buttons in case user closes the invitation.
             IsVisible = false;
         }
 
@@ -109,12 +115,6 @@ namespace Gitee.TeamFoundation.Connect
             {
                 x.OpenSolutionViaDlg(path, 1);
             }
-        }
-
-        public override void Refresh()
-        {
-            ((View as ConnectSectionView).DataContext as ConnectSectionViewModel).Refresh();
-            base.Refresh();
         }
 
         public override void Dispose()

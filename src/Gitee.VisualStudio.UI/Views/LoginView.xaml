@@ -11,7 +11,7 @@
                mc:Ignorable="d"
                Width="350"
                UseLayoutRounding="True"
-               d:DesignWidth="300">
+               d:DesignWidth="300" Height="350">
     <shared:Dialog.Resources>
         <ResourceDictionary>
             <Style TargetType="Image">
@@ -59,7 +59,11 @@
     </shared:Dialog.Resources>
     <controls:BusyIndicator IsBusy="{Binding IsBusy}"
                             BusyContent="{Binding BusyContent}">
-        <Grid Margin="15">
+        <Grid Margin="15,94,15.4,9.8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="13*"/>
+                <ColumnDefinition Width="51*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="55" />
                 <RowDefinition Height="55" />
@@ -74,7 +78,7 @@
                                     VerticalAlignment="Top"
                                     Icon="/Gitee.VisualStudio.UI;component/Resources/images/user.png"
                                     Wartermark="{x:Static shared:Strings.Login_Email}"
-                                    Text="{Binding Email}" />
+                                    Text="{Binding Email}" Grid.ColumnSpan="2" />
             <controls:IconedTextBox x:Name="PasswordTextBox"
                                     Height="40"
                                     Grid.Row="1"
@@ -82,14 +86,14 @@
                                     VerticalAlignment="Top"
                                     Icon="/Gitee.VisualStudio.UI;component/Resources/Images/password.png"
                                     Wartermark="{x:Static shared:Strings.Login_Password}"
-                                    Text="{Binding Password, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" />
+                                    Text="{Binding Password, Mode=TwoWay, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" Grid.ColumnSpan="2" />
             <Button Style="{StaticResource LinkButton}"
                     Grid.Row="2"
                     Content="{x:Static shared:Strings.Login_ForgetPassword}"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
-                    Margin="0,0,0,15"
-                    Command="{Binding ForgetPasswordCommand}"/>
+                    Margin="0,0,0,15.2"
+                    Command="{Binding ForgetPasswordCommand}" Grid.Column="1"/>
             <Button x:Name="SignInButton"
                     Height="35"
                     Background="#3b83c0"
@@ -98,8 +102,8 @@
                     FontSize="14"
                     Content="{x:Static shared:Strings.Login_Login}"
                     VerticalAlignment="Top"
-                    Grid.Row="3"
-                    Command="{Binding LoginCommand}">
+                    Grid.Row="2"
+                    Command="{Binding LoginCommand}" Grid.ColumnSpan="2" Margin="0,31,0,0" Grid.RowSpan="2">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Background"
@@ -144,11 +148,11 @@
                        Foreground="#888"
                        FontSize="15"
                        Visibility="Hidden"
-                       Text="Login in using any of the following services:" />
+                       Text="Login in using any of the following services:" Grid.ColumnSpan="2" Margin="0,0,0,-1" />
 
             <StackPanel Orientation="Horizontal"
-                        Grid.Row="5"
-                        Visibility="Hidden">
+                        Grid.Row="3"
+                        Visibility="Hidden" Grid.ColumnSpan="2" Margin="0,55.8,0,0" Grid.RowSpan="2">
                 <StackPanel.Resources>
                     <Style TargetType="Button">
                         <Setter Property="Background"
@@ -180,17 +184,18 @@
                 </Button>
             </StackPanel>
             <Button Style="{StaticResource LinkButton}"
-                    Grid.Row="6"
+                    Grid.Row="4"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Left"
                     Command="{Binding ActiveAccountCommand}"
-                    Content="{x:Static shared:Strings.Login_ReSendEmail}" />
+                    Content="{x:Static shared:Strings.Login_ReSendEmail}" Grid.ColumnSpan="2" Margin="0,14.8,0,15" />
             <Button Style="{StaticResource LinkButton}"
-                    Grid.Row="6"
+                    Grid.Row="4"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
                     Command="{Binding SignupCommand}"
-                    Content="{x:Static shared:Strings.Login_SignUp}" />
+                    Content="{x:Static shared:Strings.Login_SignUp}" Grid.Column="1" Margin="0,14.8,0,15" />
+            <Image HorizontalAlignment="Left" Height="108" Margin="8,-109,-17,0" VerticalAlignment="Top" Width="329" Source="/Gitee.VisualStudio.UI;component/Resources/images/logo_gitee_light_cn_with_domain_name.png" Grid.ColumnSpan="2" Stretch="UniformToFill"/>
         </Grid>
     </controls:BusyIndicator>
 </shared:Dialog>

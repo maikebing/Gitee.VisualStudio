@@ -219,15 +219,25 @@ namespace Gitee.VisualStudio.Services
             }
             catch (Exception ex)
             {
+
                 throw new Exception("用户登录凭证无效，请重新登陆",ex);
             }
+            finally
+            {
+                if (_user?.Session == null || _user?.Detail == null)
+                {
+                    _user = null;
+                }
+            }
+          
         }
 
         public void Erase()
         {
             _user = null;
             EraseCredential("git:https://gitee.com");
-            EraseCredential("token:https://gitee.com");
+            EraseCredential("access_token:https://gitee.com");
+            EraseCredential("refresh_token:https://gitee.com");
             File.Delete(_path);
         }
 

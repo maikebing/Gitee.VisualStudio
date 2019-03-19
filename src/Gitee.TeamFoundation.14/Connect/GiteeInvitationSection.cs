@@ -37,7 +37,6 @@ namespace Gitee.TeamFoundation.Connect
             Name = Strings.Name;
             Provider = Strings.Provider;
             Description = Strings.Description;
-
             var assembly = Assembly.GetExecutingAssembly().GetName().Name;
             var image = new BitmapImage(new Uri($"pack://application:,,,/{assembly};component/Resources/logo.png", UriKind.Absolute)); ;
 
@@ -47,12 +46,14 @@ namespace Gitee.TeamFoundation.Connect
                 Brush = new ImageBrush(image),
                 Geometry = new RectangleGeometry(new Rect(new Size(image.Width, image.Height)))
             });
-
+            IsVisible = true;
             Icon = new DrawingBrush(drawing);
 
-            IsVisible = !storage.IsLogined;
         }
-
+        public override void Initialize(IServiceProvider serviceProvider)
+        {
+            base.Initialize(serviceProvider);
+        }
         public override void Connect()
         {
             var dialog = _viewFactory.GetView<Dialog>(ViewTypes.Login);
