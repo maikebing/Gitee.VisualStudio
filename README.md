@@ -1,12 +1,21 @@
 # 码云的 Visual Studio 扩展
 
+[![Build status](https://ci.appveyor.com/api/projects/status/calues98sxdfnt45?svg=true)](https://ci.appveyor.com/project/MaiKeBing/gitee-visualstudio)
+[![Nuget Version](https://img.shields.io/nuget/v/Gitee.Api.svg)](https://www.nuget.org/packages/Gitee.Api/)
+![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/Gitee.GiteeVisualStudio.svg?label=Visual%20Studio%20Marketplace%20Version)
+![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/Gitee.GiteeVisualStudio.svg?label=Visual%20Studio%20Marketplace%20Installs)
+![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/Gitee.GiteeVisualStudio.svg?label=Visual%20Studio%20Marketplace%20Downloads)
+![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/Gitee.GiteeVisualStudio.svg?label=Visual%20Studio%20Marketplace%20Rating)
+
+
 提示 Visual Studio  2015,2017,2019 均有社区版，码云的 Visual Studio 扩展支持 2015、2017、2019、的社区版、专业版、企业版。
 
 社区版基本功能和专业版一致，前提是只能用于非商业项目和开源项目。Express 版可以用于商业项目，也可以只下载 Visual Studio C++ Build Tools ，这个可以无限制使用。
 
 ## 安装
 
-Go [https://marketplace.visualstudio.com/items?itemName=Gitee.GiteeVisualStudio](https://marketplace.visualstudio.com/items?itemName=Gitee.GiteeVisualStudio)
+* 当前发布版本 [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=Gitee.GiteeVisualStudio)
+* 最新构建版本 [Open VSIX Gallery](http://vsixgallery.com/extension/E1307109-9A20-4A1A-8788-B9B642193C47/)  
 
 注：Gitee.VisualStudio 只支持 Visual Studio 2015/2017/2019。
 
@@ -34,7 +43,7 @@ Visual Studio 版本管理相关功能，都集中在 Team Explorer Gitee.Visual
 
 #### 退出
 
-在 Gitee 区的工具栏中，点击退出按钮，即可登出当前用户。
+在 Gitee 区的工具栏中，点击退出按钮，即可退出当前用户。
 
 注：登陆信息会从系统清除，但是克隆的项目仍旧保留，下次登陆仍旧存在。
 
