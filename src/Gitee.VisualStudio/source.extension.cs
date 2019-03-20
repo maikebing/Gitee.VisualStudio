@@ -7,7 +7,7 @@ namespace Gitee.VisualStudio
 {
     static class Vsix
     {
-        public const string Id = "E1307109-9A20-4A1A-8788-B9B642193C47";
+        public const string Id = "B1077C66-1666-4F60-BDFA-BA078FDABCCE";
         public const string Name = "Gitee Extension for Visual Studio";
         public const string Description = @"A Visual Studio Extension that brings the Gitee Flow into Visual Studio.";
         public const string Language = "zh-CN";
