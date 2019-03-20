@@ -4,18 +4,18 @@ configuration: Release
 platform: Any CPU
 assembly_info:
   patch: true
-  file: '**\AssemblyInfo.*;**\SolutionInfo.cs'
+  file: '**\AssemblyInfo.*;**\SolutionInfo.cs;**\source.extension.cs'
   assembly_version: '{version}'
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
-
 install:
 - ps: >-
     (new-object Net.WebClient).DownloadString("https://raw.github.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
     nuget restore GiteeVS.sln
     Vsix-IncrementVsixVersion | Vsix-UpdateBuildVersion
     Vsix-TokenReplacement src\common\SolutionInfo.cs 'Version = "([0-9\\.]+)"' 'Version = "{version}"'
-    Set-Content -Path src\common\SDKConfig.cs  -Value 'namespace Gitee.Api { public static class SdkConfig { public static string client_id { get; set; } = " $env:client_id"; public static string client_secret { get; set; } = "$env:client_secret"; public static string username { get; set; } = ""; public static string password { get; set; } = ""; } }'
+    $SDKConfigContent='namespace Gitee.Api { public static class SdkConfig { public static string client_id { get; set; } = "'+$env:client_id+'"; public static string client_secret { get; set; } = "'+$env:client_secret+'"; public static string username { get; set; } = ""; public static string password { get; set; } = ""; } }'
+    Set-Content -Path src\common\SDKConfig.cs  -Value  $SDKConfigContent
 build_script:
 - ps: msbuild /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
 after_test:
