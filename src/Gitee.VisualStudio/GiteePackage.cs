@@ -28,7 +28,7 @@ namespace Gitee.VisualStudio
 {
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [ProvideBindingPath]
-    [InstalledProductRegistration("#110", "#112", settin .Version, IconResourceID = 400)]
+    [InstalledProductRegistration("#110", "#112", PackageVersion.Version, IconResourceID = 400)]
     [Guid(PackageGuids.guidGitee4VSPkgString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     // this is the Git service GUID, so we load whenever it loads
