@@ -2,6 +2,7 @@
 
 namespace Gitee.VisualStudio.Shared.Helpers.Commands
 {
+    using Microsoft.VisualStudio.Threading;
     using System;
     using System.Collections.Generic;
     using System.Threading;

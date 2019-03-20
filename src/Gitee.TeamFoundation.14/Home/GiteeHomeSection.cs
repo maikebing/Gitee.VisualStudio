@@ -4,6 +4,7 @@ using Gitee.VisualStudio.Shared.Helpers;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
 using Microsoft.VisualStudio.TeamFoundation.Git.Extensibility;
+using Microsoft.VisualStudio.Threading;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Windows;
@@ -37,9 +38,9 @@ namespace Gitee.TeamFoundation.Home
                 Task.Run(async () =>
                 {
                     var result = _tes.IsGiteeRepo();
-                    await ThreadingHelper.SwitchToMainThreadAsync();
+                    await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                     IsVisible = result;
-                });
+                }).Forget();
             }
         }
 
@@ -56,9 +57,9 @@ namespace Gitee.TeamFoundation.Home
             Task.Run(async () =>
             {
                 var result = _tes.IsGiteeRepo();
-                await ThreadingHelper.SwitchToMainThreadAsync();
+                await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                 IsVisible = result;
-            });
+            }).Forget();
         }
 
         protected override object CreateView(SectionInitializeEventArgs e)

@@ -59,6 +59,7 @@ namespace Gitee.TeamFoundation.Connect
         {
 
             ((View as ConnectSectionView).DataContext as ConnectSectionViewModel).Refresh();
+            IsVisible = _storage.IsLogined;
             base.Refresh();
         }
 
@@ -75,7 +76,6 @@ namespace Gitee.TeamFoundation.Connect
         public override void Initialize(object sender, SectionInitializeEventArgs e)
         {
             base.Initialize(sender, e);
-
             IsVisible = _storage.IsLogined;
         }
 

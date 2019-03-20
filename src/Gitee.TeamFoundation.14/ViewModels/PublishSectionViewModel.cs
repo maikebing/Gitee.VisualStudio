@@ -1,6 +1,7 @@
 ﻿using Gitee.VisualStudio.Shared;
 using Gitee.VisualStudio.Shared.Helpers;
 using Gitee.VisualStudio.Shared.Helpers.Commands;
+using Microsoft.VisualStudio.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -278,7 +279,7 @@ namespace Gitee.TeamFoundation.ViewModels
                     ShowGetStarted = true;
                     OnPublished();
                 }
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
         }
 
         private bool CanPublish()

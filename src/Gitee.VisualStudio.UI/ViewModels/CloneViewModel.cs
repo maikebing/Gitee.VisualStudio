@@ -1,6 +1,7 @@
 ﻿using Gitee.VisualStudio.Shared;
 using Gitee.VisualStudio.Shared.Helpers;
 using Gitee.VisualStudio.Shared.Helpers.Commands;
+using Microsoft.VisualStudio.Threading;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -205,7 +206,7 @@ namespace Gitee.VisualStudio.UI.ViewModels
                 {
                     Message = error;
                 }
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
         }
 
 

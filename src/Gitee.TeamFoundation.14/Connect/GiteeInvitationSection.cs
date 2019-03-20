@@ -52,7 +52,10 @@ namespace Gitee.TeamFoundation.Connect
 
             IsVisible = !storage.IsLogined;
         }
-
+        public override void Initialize(IServiceProvider serviceProvider)
+        {
+            base.Initialize(serviceProvider);
+        }
         public override void Connect()
         {
             var dialog = _viewFactory.GetView<Dialog>(ViewTypes.Login);

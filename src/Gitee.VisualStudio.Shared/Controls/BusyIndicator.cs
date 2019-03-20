@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.Threading;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
@@ -109,7 +110,6 @@ namespace Gitee.VisualStudio.Shared.Controls
                 // No longer visible
                 _displayAfterTimer.Stop();
                 IsContentVisible = false;
-
                 if (this.FocusAfterBusy != null)
                 {
                     this.FocusAfterBusy.Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() =>

@@ -1,6 +1,7 @@
 ﻿using Gitee.VisualStudio.Shared;
 using Gitee.VisualStudio.Shared.Helpers;
 using Gitee.VisualStudio.Shared.Helpers.Commands;
+using Microsoft.VisualStudio.Threading;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using System.Windows;
@@ -138,7 +139,7 @@ namespace Gitee.VisualStudio.UI.ViewModels
                 {
                     MessageBox.Show(Strings.Login_FailedToLogin);
                 }
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
         }
 
         private void OnForgetPassword()

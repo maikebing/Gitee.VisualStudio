@@ -4,6 +4,7 @@ using Microsoft.TeamFoundation.Controls;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TeamFoundation.Git.Extensibility;
+using Microsoft.VisualStudio.Threading;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -174,7 +175,7 @@ namespace Gitee.TeamFoundation
                               ShowMessage($"加载码云项目时遇到异常:{ex.Message}");
                           }
                           isloading = false;
-                      });
+                      }).Forget();
                 }
             }
             return !string.IsNullOrEmpty(url) && url.ToLower().StartsWith("https://gitee.com");

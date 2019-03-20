@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.IO;
 using System.Threading;
+using Microsoft.VisualStudio.Threading;
 
 namespace Gitee.VisualStudio.UI.ViewModels
 {
@@ -200,7 +201,7 @@ namespace Gitee.VisualStudio.UI.ViewModels
 
                     _dialog.Close();
                 }
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            }, TaskScheduler.FromCurrentSynchronizationContext()).Forget();
         }
 
         private async Task InitialCommitAsync(string url)

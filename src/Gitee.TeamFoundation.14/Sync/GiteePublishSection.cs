@@ -4,6 +4,7 @@ using Gitee.VisualStudio.Shared;
 using Gitee.VisualStudio.Shared.Helpers;
 using Microsoft.TeamFoundation.Controls;
 using Microsoft.TeamFoundation.Controls.WPF.TeamExplorer;
+using Microsoft.VisualStudio.Threading;
 using System;
 using System.ComponentModel.Composition;
 using System.Threading.Tasks;
@@ -66,10 +67,10 @@ namespace Gitee.TeamFoundation.Sync
             Task.Run(async () =>
             {
                 var result = !_tes.IsGiteeRepo();
-                await ThreadingHelper.SwitchToMainThreadAsync();
+                await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                 IsVisible = result;
                 ((SectionContent as FrameworkElement)?.DataContext as PublishSectionViewModel)?.Refresh();
-            });
+            }).Forget();
             base.Refresh();
         }
 
