@@ -15,7 +15,7 @@
 ## 安装
 
 * 当前发布版本 [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=Gitee.GiteeVisualStudio)
-* 最新构建版本 [Open VSIX Gallery](http://vsixgallery.com/extension/E1307109-9A20-4A1A-8788-B9B642193C47/)  
+* 最新构建版本 [Open VSIX Gallery](http://vsixgallery.com/extension/B1077C66-1666-4F60-BDFA-BA078FDABCCE/)  
 
 注：Gitee.VisualStudio 只支持 Visual Studio 2015/2017/2019。
 
