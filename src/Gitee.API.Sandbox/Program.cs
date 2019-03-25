@@ -1,5 +1,6 @@
 ﻿using Gitee.Api;
 using Gitee.Api.Dto;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,9 +25,14 @@ namespace Gitee.API.Sandbox
             {
                 try
                 {
+ 
+
                     SDK.client_id = SdkConfig.client_id;
                     SDK.client_secret = SdkConfig.client_secret;
                     var client = await SDK.LoginAsync(SdkConfig.username, SdkConfig.password);
+                    var g = await client.CreateGists("test.txt", "test code", "测试代码", true);
+                    var g2 = await client.CreateGists("test1.txt", "test code1", "测试代码", false);
+
                     var user = await client.GetUserAsync();
                     var poject = await client.GetReposAsync(1, 20);
                     var ooox = await SDK.RefreshToken(client.Token.refresh_token);

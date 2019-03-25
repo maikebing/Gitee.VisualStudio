@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using RestSharp;
 using System.Net;
 using Gitee.Api.Dto;
+using Newtonsoft.Json;
 
 namespace Gitee.Api
 {
@@ -61,7 +62,15 @@ namespace Gitee.Api
                 var request = new RestRequest(resource, method);
                 if (paramAsJson)
                 {
-                    request.AddJsonBody(parameters);
+                    request.AddHeader("Content-Type", "application/json");
+                    if (typeof(JObject) == parameters?.GetType())
+                    {
+                        request.AddParameter("undefined", parameters.ToString(), ParameterType.RequestBody);
+                    }
+                    else
+                    {
+                        request.AddJsonBody(parameters);
+                    }
                 }
                 else
                 {
@@ -89,7 +98,7 @@ namespace Gitee.Api
             }
             catch (Exception ex)
             {
-                throw new GiteeApiException(ex.Message, ex);
+                throw ex;
             }
             return result;
         }
@@ -105,7 +114,7 @@ namespace Gitee.Api
         public static async Task<Session> LoginAsync(string username, string password)
         {
             var _session = new Session();
-            _session.Token = await _session.Request<TokenDto>("../oauth/token", new { grant_type = "password", username, password, client_id, client_secret, scope = "projects user_info issues notes" }, Method.POST);
+            _session.Token = await _session.Request<TokenDto>("../oauth/token", new { grant_type = "password", username, password, client_id, client_secret, scope = "user_info projects pull_requests issues notes groups gists" }, Method.POST);
             _session.Client = new Client(new HttpClient());
             _session.Client.BaseUrl = _session.BaseURL;
             return _session;
@@ -138,6 +147,17 @@ namespace Gitee.Api
             _session.Client = new Client(new HttpClient());
             _session.Client.BaseUrl = _session.BaseURL;
             return _session;
+        }
+
+        public static Task<Gists> CreateGists(this Session session, string filename, string content, string description, bool ispublic)
+        {
+            var obj = new { session.Token.access_token, description, @public = ispublic.ToString().ToLower() };
+            JObject jObject = JObject.Parse(JsonConvert.SerializeObject(obj));
+            jObject.Add("files", new JObject
+            {
+                { filename, JObject.Parse(JsonConvert.SerializeObject(new { content })) }
+            });
+            return Request<Gists>(session, "/v5/gists", jObject, Method.POST, true);
         }
     }
 }
