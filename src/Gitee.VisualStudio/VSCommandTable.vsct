@@ -77,6 +77,13 @@
           <CommandName>OpenFromUrl</CommandName>
         </Strings>
       </Button>
+      <Button guid="guidGitee4VSCmdSet" id="OpenCreateSnippet" priority="0x0800" type="Button">
+        <Parent guid="guidGitee4VSCmdSet" id="SubMenuGroup" />
+        <Strings>
+          <ButtonText>创建代码片段</ButtonText>
+          <CommandName>CreateSnippet</CommandName>
+        </Strings>
+      </Button>
     </Buttons>
   </Commands>
   <CommandPlacements>
@@ -142,6 +149,7 @@
       <IDSymbol name="OpenBlame" value="0x0500" />
       <IDSymbol name="OpenCommits" value="0x0600" />
       <IDSymbol name="OpenFromUrl" value="0x0700" />
+      <IDSymbol name="OpenCreateSnippet" value="0x0800" />
     </GuidSymbol>
 
     <!-- List for various editor types -->

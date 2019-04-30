@@ -4,6 +4,8 @@ using EnvDTE80;
 using Gitee.VisualStudio.Helpers;
 using Gitee.VisualStudio.Services;
 using Gitee.VisualStudio.Shared;
+using Gitee.VisualStudio.UI.ViewModels;
+using Gitee.VisualStudio.UI.Views;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
@@ -143,7 +145,8 @@ namespace Gitee.VisualStudio
                             PackageIds.OpenRevisionFull,
                             PackageIds.OpenBlame,
                             PackageIds.OpenCommits,
-                            PackageIds.OpenFromUrl
+                            PackageIds.OpenFromUrl,
+                            PackageIds.OpenCreateSnippet
                         }.ToList().ForEach(item =>
                         {
                             var menuCommandID = new CommandID(PackageGuids.guidGitee4VSCmdSet, (int)item);
@@ -160,7 +163,7 @@ namespace Gitee.VisualStudio
                 }
                 else
                 {
-                    OutputWindowHelper.DiagnosticWriteLine("mcs 为空");
+                    OutputWindowHelper.DiagnosticWriteLine("mcs is null");
                 }
             });
        
@@ -261,7 +264,11 @@ namespace Gitee.VisualStudio
                             }
                         }
                         break;
-                     default:
+                    case PackageIds.OpenCreateSnippet:
+                        var selectionLineRange = GetSelectionLineRange();
+                        command.Enabled = selectionLineRange!=null &&   selectionLineRange.Item1 < selectionLineRange.Item2;
+                        break;
+                    default:
                         break;
                 }
             }
@@ -325,6 +332,23 @@ namespace Gitee.VisualStudio
                             {
                                 OutputWindowHelper.ExceptionWriteLine(string.Format("ExecuteCommand {0}", command.CommandID.ID, ex.Message),ex);
                             }
+                        }
+                        break;
+                    case PackageIds.OpenCreateSnippet:
+                        var selection = DTE.ActiveDocument.Selection as TextSelection;
+                        if (selection != null)
+                        {
+                            var dialog = _viewFactory.GetView<Dialog>(ViewTypes.CreateSnippet);
+                            var cs = (CreateSnippet)dialog;
+                            var csm = cs.DataContext as CreateSnippetViewModel;
+                            csm.Code = selection.Text;
+                            csm.FileName = new FileInfo(DTE.ActiveDocument.FullName).Name;
+                            csm.Desc = csm.FileName;
+                            _shell.ShowDialog(Strings.CreateSnippet, dialog);
+                        }
+                        else
+                        {
+                            OutputWindowHelper.DiagnosticWriteLine(Strings.PleaseSelectCode);
                         }
                         break;
                     default:

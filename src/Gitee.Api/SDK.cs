@@ -93,6 +93,10 @@ namespace Gitee.Api
                 {
                     var jtk = Newtonsoft.Json.Linq.JToken.Parse(response.Content);
                     var apperror = jtk.ToObject<ApiError>();
+                    if (string.IsNullOrEmpty(apperror.error_description))
+                    {
+                        apperror.error_description = jtk["message"]?.ToString();
+                    }
                     throw new GiteeApiException(apperror);
                 }
             }

@@ -48,13 +48,13 @@ namespace Gitee.TeamFoundation.ViewModels
             _openRepositoryCommand = new DelegateCommand<Repository>(OnOpenRepository);
             if (_storage.IsLogined)
             {
-                LoadRepositoriesAsync();
+                LoadRepositories();
             }
         }
         public Visibility Visibility { get; set; }
         public void OnLogined()
         {
-            LoadRepositoriesAsync();
+            LoadRepositories();
         }
 
         private void OnRepositoriesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -126,7 +126,7 @@ namespace Gitee.TeamFoundation.ViewModels
 
         public void Refresh()
         {
-            LoadRepositoriesAsync();
+            LoadRepositories();
         }
 
         private void OnOpenRepository(Repository repo)
@@ -143,7 +143,7 @@ namespace Gitee.TeamFoundation.ViewModels
             }
         }
 
-        private void LoadRepositoriesAsync()
+        private void LoadRepositories()
         {
             IReadOnlyList<Repository> known = null;
             IReadOnlyList<Project> remotes = null;

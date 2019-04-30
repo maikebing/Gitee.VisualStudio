@@ -30,7 +30,7 @@ namespace Gitee.VisualStudio.Services
             var user = await _storage.GetUserAsync();
             if (user == null)
             {
-                throw new UnauthorizedAccessException("Not login yet");
+                throw new UnauthorizedAccessException(Strings.NotLoginYet);
             }
 
             var result = new List<Project>();
@@ -77,7 +77,7 @@ namespace Gitee.VisualStudio.Services
             var user = await _storage.GetUserAsync();
             if (user == null)
             {
-                throw new UnauthorizedAccessException("Not login yet");
+                throw new UnauthorizedAccessException(Strings.NotLoginYet);
             }
 
             var result = new CreateResult();
@@ -98,6 +98,46 @@ namespace Gitee.VisualStudio.Services
 
                 throw new Exception($"错误代码: {statusCode}");
             }
+        }
+
+        public async Task<CreateSnippetResult> CreateSnippetAsync(string title, string fileName, string desc, string code, bool visibility)
+        {
+            CreateSnippetResult result = null;
+            var user = await _storage.GetUserAsync();
+            if (user == null)
+            {
+                result = new CreateSnippetResult
+                {
+                    Success = false,
+                    Message = Strings.NotLoginYet
+                };
+            }
+            else
+            {
+
+                try
+                {
+
+                    var gists = await user.Session.CreateGists(fileName, code, desc, visibility );
+
+                    result = new CreateSnippetResult
+                    {
+                        WebUrl = gists.html_url,
+                        Success = gists != null,
+                        Message = Strings.GistsCreated
+                    };
+
+                }
+                catch (Exception ex)
+                {
+                    result = new CreateSnippetResult()
+                    {
+                        Success = false,
+                        Message = ex.Message
+                    };
+                }
+            }
+            return result;
         }
     }
 }

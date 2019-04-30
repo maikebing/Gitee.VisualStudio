@@ -27,21 +27,25 @@ namespace Gitee.VisualStudio.Services
 
         public T GetView<T>(ViewTypes type) where T: Control
         {
-            if (type == ViewTypes.Login)
+            T result = default(T);
+            switch (type)
             {
-                return new LoginView(_messenger, _shell, _storage, _web) as T;
+                case ViewTypes.Clone:
+                    result= new CloneView(_messenger, _shell, _storage, _web) as T;
+                    break;
+                case ViewTypes.Create:
+                    result= new CreateView(_git, _messenger, _shell, _storage, _web) as T;
+                    break;
+                case ViewTypes.Login:
+                    result= new LoginView(_messenger, _shell, _storage, _web) as T;
+                    break;
+                case ViewTypes.CreateSnippet:
+                    result= new CreateSnippet(_messenger, _shell, _storage, _web) as T;
+                    break;
+                default:
+                    break;
             }
-
-            if (type == ViewTypes.Clone)
-            {
-                return new CloneView(_messenger, _shell, _storage, _web) as T;
-            }
-
-            if (type == ViewTypes.Create)
-            {
-                return new CreateView(_git, _messenger, _shell, _storage, _web) as T;
-            }
-            return null;
+            return result;
         }
     }
 }

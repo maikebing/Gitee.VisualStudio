@@ -40,7 +40,7 @@ namespace Gitee.VisualStudio.UI.ViewModels
 
             _baseRepositoryPath = _storage.GetBaseRepositoryDirectory();
 
-            LoadRepositoriesAsync();
+            LoadRepositories();
 
             _cloneCommand = new DelegateCommand(OnClone, CanClone);
             _browseCommand = new DelegateCommand(OnBrowse);
@@ -163,7 +163,7 @@ namespace Gitee.VisualStudio.UI.ViewModels
             _dialog.Close();
         }
 
-        private void LoadRepositoriesAsync()
+        private void LoadRepositories()
         {
             string error = null;
             IEnumerable<Project> loaded = null;

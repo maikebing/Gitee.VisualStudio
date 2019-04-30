@@ -78,5 +78,14 @@ namespace Gitee.VisualStudio.Shared
         Task<IReadOnlyList<Project>> GetProjectsAsync();
 
         Task<CreateResult> CreateProjectAsync(string name, string description, bool isPrivate);
+        Task<CreateSnippetResult> CreateSnippetAsync(string title, string fileName, string desc, string code, bool visibility);
+    }
+
+    public class CreateSnippetResult
+    {
+        public object Snippet { get; set; }
+        public string WebUrl { get; set; }
+        public bool Success { get; set; }
+        public string Message { get; set; }
     }
 }

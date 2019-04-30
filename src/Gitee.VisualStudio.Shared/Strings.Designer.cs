@@ -19,7 +19,7 @@ namespace Gitee.VisualStudio.Shared {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -61,6 +61,15 @@ namespace Gitee.VisualStudio.Shared {
         }
         
         /// <summary>
+        ///   查找类似 After Created Open In The Browser 的本地化字符串。
+        /// </summary>
+        public static string AfterCreatedOpenInTheBrowser {
+            get {
+                return ResourceManager.GetString("AfterCreatedOpenInTheBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Failed to load 的本地化字符串。
         /// </summary>
         public static string CloneView_FailedToLoadProjects {
@@ -84,6 +93,15 @@ namespace Gitee.VisualStudio.Shared {
         public static string CloneView_Search {
             get {
                 return ResourceManager.GetString("CloneView_Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Close 的本地化字符串。
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
             }
         }
         
@@ -259,6 +277,105 @@ namespace Gitee.VisualStudio.Shared {
         }
         
         /// <summary>
+        ///   查找类似 Createing a snippet, pleasw wait 的本地化字符串。
+        /// </summary>
+        public static string CreateingASnippetPleaswWait {
+            get {
+                return ResourceManager.GetString("CreateingASnippetPleaswWait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Create Snippet 的本地化字符串。
+        /// </summary>
+        public static string CreateSnippet {
+            get {
+                return ResourceManager.GetString("CreateSnippet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Create 的本地化字符串。
+        /// </summary>
+        public static string CreateSnippet_Button {
+            get {
+                return ResourceManager.GetString("CreateSnippet_Button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 no title 的本地化字符串。
+        /// </summary>
+        public static string CreateSnippetNoTitle {
+            get {
+                return ResourceManager.GetString("CreateSnippetNoTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Is public? 的本地化字符串。
+        /// </summary>
+        public static string CreateSnippetView_IsPublic {
+            get {
+                return ResourceManager.GetString("CreateSnippetView_IsPublic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Code IsRequired 的本地化字符串。
+        /// </summary>
+        public static string CreateSnippetViewModel_CodeIsRequired {
+            get {
+                return ResourceManager.GetString("CreateSnippetViewModel_CodeIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Descriptors Is Required 的本地化字符串。
+        /// </summary>
+        public static string CreateSnippetViewModel_DescriptorsIsRequired {
+            get {
+                return ResourceManager.GetString("CreateSnippetViewModel_DescriptorsIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Failed to create Snippet 的本地化字符串。
+        /// </summary>
+        public static string CreateSnippetViewModel_FailedToCreateSnippet {
+            get {
+                return ResourceManager.GetString("CreateSnippetViewModel_FailedToCreateSnippet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 FileName Is Required 的本地化字符串。
+        /// </summary>
+        public static string CreateSnippetViewModel_FileNameIsRequired {
+            get {
+                return ResourceManager.GetString("CreateSnippetViewModel_FileNameIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Title Is Required 的本地化字符串。
+        /// </summary>
+        public static string CreateSnippetViewModel_TitleIsRequired {
+            get {
+                return ResourceManager.GetString("CreateSnippetViewModel_TitleIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Visibility Is Required 的本地化字符串。
+        /// </summary>
+        public static string CreateSnippetViewModel_VisibilityIsRequired {
+            get {
+                return ResourceManager.GetString("CreateSnippetViewModel_VisibilityIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Name is mandatory 的本地化字符串。
         /// </summary>
         public static string CreateView_NameIsRequired {
@@ -291,6 +408,24 @@ namespace Gitee.VisualStudio.Shared {
         public static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 File Name 的本地化字符串。
+        /// </summary>
+        public static string FileName {
+            get {
+                return ResourceManager.GetString("FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Gists Created 的本地化字符串。
+        /// </summary>
+        public static string GistsCreated {
+            get {
+                return ResourceManager.GetString("GistsCreated", resourceCulture);
             }
         }
         
@@ -475,7 +610,25 @@ namespace Gitee.VisualStudio.Shared {
         }
         
         /// <summary>
-        ///   查找类似 OSChina.Net 的本地化字符串。
+        ///   查找类似 Not login yet 的本地化字符串。
+        /// </summary>
+        public static string NotLoginYet {
+            get {
+                return ResourceManager.GetString("NotLoginYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 please select code 的本地化字符串。
+        /// </summary>
+        public static string PleaseSelectCode {
+            get {
+                return ResourceManager.GetString("PleaseSelectCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Gitee.Net 的本地化字符串。
         /// </summary>
         public static string Provider {
             get {
@@ -552,6 +705,24 @@ namespace Gitee.VisualStudio.Shared {
         public static string Repository_Name {
             get {
                 return ResourceManager.GetString("Repository_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Title 的本地化字符串。
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Visibility 的本地化字符串。
+        /// </summary>
+        public static string Visibility {
+            get {
+                return ResourceManager.GetString("Visibility", resourceCulture);
             }
         }
     }
