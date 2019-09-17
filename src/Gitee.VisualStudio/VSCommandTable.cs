@@ -52,6 +52,7 @@ namespace Gitee.VisualStudio
         public const int OpenCommits = 0x0600;
         public const int OpenFromUrl = 0x0700;
         public const int OpenCreateSnippet = 0x0800;
+        public const int OpenWebIDE = 0x0900;
         public const int IDMX_HTML_SOURCE = 0x0001;
         public const int IDMX_CSS_SOURCE = 0x0002;
         public const int IDMX_JSON_SOURCE = 0x0003;

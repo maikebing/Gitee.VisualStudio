@@ -146,7 +146,8 @@ namespace Gitee.VisualStudio
                             PackageIds.OpenBlame,
                             PackageIds.OpenCommits,
                             PackageIds.OpenFromUrl,
-                            PackageIds.OpenCreateSnippet
+                            PackageIds.OpenCreateSnippet,
+                            PackageIds.OpenWebIDE
                         }.ToList().ForEach(item =>
                         {
                             var menuCommandID = new CommandID(PackageGuids.guidGitee4VSCmdSet, (int)item);
@@ -163,7 +164,7 @@ namespace Gitee.VisualStudio
                 }
                 else
                 {
-                    OutputWindowHelper.DiagnosticWriteLine("mcs is null");
+                    OutputWindowHelper.DiagnosticWriteLine("OleMenuCommandService  is null");
                 }
             });
        
@@ -235,6 +236,7 @@ namespace Gitee.VisualStudio
                     case PackageIds.OpenMaster:
                     case PackageIds.OpenRevision:
                     case PackageIds.OpenRevisionFull:
+                    case PackageIds.OpenWebIDE:
                         {
                             try
                             {
@@ -313,6 +315,7 @@ namespace Gitee.VisualStudio
                     case PackageIds.OpenMaster:
                     case PackageIds.OpenRevision:
                     case PackageIds.OpenRevisionFull:
+                    case PackageIds.OpenWebIDE:
                         {
                             try
                             {
@@ -460,6 +463,7 @@ namespace Gitee.VisualStudio
             if (commandId == PackageIds.OpenRevisionFull) return GiteeUrlType.CurrentRevisionFull;
             if (commandId == PackageIds.OpenBlame) return GiteeUrlType.Blame;
             if (commandId == PackageIds.OpenCommits) return GiteeUrlType.Commits;
+            if (commandId == PackageIds.OpenWebIDE) return GiteeUrlType.WebIDE;
             else return GiteeUrlType.Master;
         }
     }

@@ -16,6 +16,7 @@ namespace Gitee.VisualStudio.Services
         CurrentRevisionFull,
         Blame,
         Commits,
+        WebIDE
     }
 
     public sealed class GitAnalysis : IDisposable
@@ -83,7 +84,7 @@ namespace Gitee.VisualStudio.Services
                     return $"浏览修订({repository.Commits.First().Id.ToString(8)})完整ID";
 
                 case GiteeUrlType.Blame:
-                    return "按行查看";
+                    return "在线追溯";
 
                 case GiteeUrlType.Commits:
                     return "浏览提交历史";
@@ -96,6 +97,7 @@ namespace Gitee.VisualStudio.Services
 
         public string BuildGiteaUrl(GiteeUrlType urlType, Tuple<int, int> selectionLineRange)
         {
+            string fileUrl = "";
             string urlRoot = GetRepoUrlRoot();
 
             // foo/bar.cs
@@ -120,8 +122,16 @@ namespace Gitee.VisualStudio.Services
             {
                 urlshowkind = "commits";
             }
-            var fileUrl = string.Format("{0}/{4}/{1}/{2}{3}", urlRoot.Trim('/'), WebUtility.UrlEncode(repositoryTarget.Trim('/')), fileIndexPath.Trim('/'), fragment, urlshowkind);
-
+            if (urlType == GiteeUrlType.WebIDE)
+            {
+                Uri uri = new Uri(urlRoot);
+                //https://gitee.com/-/ide/project/uixe/LaneApp/edit/master/-/src/dev/ICR/CardMonitorThread.c#L94
+                fileUrl = $"{uri.Scheme}://{uri.Host}/-/ide/project{uri.AbsolutePath}/edit/{repositoryTarget}/-/{fileIndexPath}{fragment}";
+            }
+            else
+            {
+                fileUrl = string.Format("{0}/{4}/{1}/{2}{3}", urlRoot.Trim('/'), WebUtility.UrlEncode(repositoryTarget.Trim('/')), fileIndexPath.Trim('/'), fragment, urlshowkind);
+            }
             return fileUrl;
         }
 

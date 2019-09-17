@@ -28,38 +28,46 @@ namespace Gitee.VisualStudio.Services
 
         private bool _isChecked;
         private DateTime lastcheck = DateTime.MinValue;
+        private  bool __isLogined=false;
         public bool IsLogined
         {
             get
             {
-                var result = _user != null && _user.Session != null && _user.Detail != null && _user.Session.Token!=null;
-                lock (_path)
+                try
                 {
-                    if (!result)
+                    __isLogined = _user != null && _user.Session != null && _user.Detail != null && _user.Session.Token != null;
+                    lock (_path)
                     {
-                        if (!_isChecked)
+                        if (!__isLogined)
                         {
-                            _isChecked = true;
-                            Task.Run(() => LoadUserAsync()).ContinueWith(async task =>
+                            if (!_isChecked)
                             {
-                                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                                if (task.IsFaulted)
+                                _isChecked = true;
+                                Task.Run(() => LoadUserAsync()).ContinueWith(async task =>
                                 {
-                                    if (task.Exception != null && task.Exception.InnerException != null)
+                                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                                    if (task.IsFaulted)
                                     {
-                                        OutputWindowHelper.ExceptionWriteLine($"Gitee4VS LoadUserAsync  IsFaulted {task.Exception.Message};{ task.Exception.InnerException.Message}.", task.Exception);
+                                        if (task.Exception != null && task.Exception.InnerException != null)
+                                        {
+                                            OutputWindowHelper.ExceptionWriteLine($"Gitee4VS LoadUserAsync  IsFaulted {task.Exception.Message};{ task.Exception.InnerException.Message}.", task.Exception);
+                                        }
+                                        if (task.Exception != null && task.Exception.InnerException == null)
+                                        {
+                                            OutputWindowHelper.ExceptionWriteLine($"Gitee4VS LoadUserAsync  IsFaulted {task.Exception.Message}.", task.Exception);
+                                        }
                                     }
-                                    if (task.Exception != null && task.Exception.InnerException == null)
-                                    {
-                                        OutputWindowHelper.ExceptionWriteLine($"Gitee4VS LoadUserAsync  IsFaulted {task.Exception.Message}.", task.Exception);
-                                    }
-                                }
-                                _isChecked = false;
-                            }, TaskScheduler.Default).Forget();
+                                    _isChecked = false;
+                                }, TaskScheduler.Default).Forget();
+                            }
                         }
                     }
                 }
-                return result;
+                catch (Exception ex)
+                {
+                    __isLogined = false;
+                }
+                return __isLogined;
             }
         }
 
