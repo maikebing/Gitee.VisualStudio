@@ -140,7 +140,16 @@ namespace Gitee.TeamFoundation
 
         public Project Project { get; private set; }
         private static bool isloading = false;
-
+        public bool IsOneGiteeRepo()
+        {
+            var repo = GetActiveRepository();
+            if (repo == null)
+            {
+                return false;
+            }
+            var url = _git.GetRemote(repo.Path);
+            return !string.IsNullOrEmpty(url) && url.ToLower().StartsWith("https://gitee.com");
+        }
         public bool IsGiteeRepo()
         {
             var repo = GetActiveRepository();

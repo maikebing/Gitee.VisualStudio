@@ -125,7 +125,6 @@ namespace Gitee.VisualStudio.Services
             if (urlType == GiteeUrlType.WebIDE)
             {
                 Uri uri = new Uri(urlRoot);
-                //https://gitee.com/-/ide/project/uixe/LaneApp/edit/master/-/src/dev/ICR/CardMonitorThread.c#L94
                 fileUrl = $"{uri.Scheme}://{uri.Host}/-/ide/project{uri.AbsolutePath}/edit/{repositoryTarget}/-/{fileIndexPath}{fragment}";
             }
             else

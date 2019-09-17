@@ -24,6 +24,7 @@ namespace Gitee.VisualStudio.Shared
         RepositoryInfo GetActiveRepository();
         string GetSolutionPath();
         bool IsGiteeRepo();
+        bool IsOneGiteeRepo();
 
         Project Project { get; }
     }

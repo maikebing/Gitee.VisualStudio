@@ -66,7 +66,7 @@ namespace Gitee.TeamFoundation.Sync
         {
             Task.Run(async () =>
             {
-                var result = !_tes.IsGiteeRepo();
+                var result = !_tes.IsOneGiteeRepo();
                 await Microsoft.VisualStudio.Shell.ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                 IsVisible = result;
                 ((SectionContent as FrameworkElement)?.DataContext as PublishSectionViewModel)?.Refresh();
