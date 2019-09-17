@@ -1,5 +1,5 @@
-﻿using EnvDTE;
-using EnvDTE100;
+﻿
+using EnvDTE;
 using EnvDTE80;
 using Gitee.VisualStudio.Helpers;
 using Gitee.VisualStudio.Services;
