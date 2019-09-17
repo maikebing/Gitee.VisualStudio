@@ -66,9 +66,6 @@
       <HintPath>..\..\lib\14.0\Microsoft.TeamFoundation.Git.Provider.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -127,7 +124,6 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Gitee.VisualStudio.Shared\Gitee.VisualStudio.Shared.csproj">
@@ -165,6 +161,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers">
       <Version>15.8.209</Version>
+    </PackageReference>
+    <PackageReference Include="System.Windows.Interactivity.WPF">
+      <Version>2.0.20525</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

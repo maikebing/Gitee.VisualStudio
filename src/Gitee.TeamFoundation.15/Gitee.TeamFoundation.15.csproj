@@ -160,7 +160,6 @@
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Gitee.VisualStudio.Shared\Gitee.VisualStudio.Shared.csproj">
@@ -200,6 +199,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers">
       <Version>15.8.209</Version>
+    </PackageReference>
+    <PackageReference Include="System.Windows.Interactivity.WPF">
+      <Version>2.0.20525</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
