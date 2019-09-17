@@ -123,12 +123,6 @@
     <Resource Include="Resources\images\windows.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gitee.VisualStudio.Shared\Gitee.VisualStudio.Shared.csproj">
-      <Project>{c3150b82-8e79-4ff6-a9ff-e361c108384f}</Project>
-      <Name>Gitee.VisualStudio.Shared</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +159,12 @@
     <PackageReference Include="System.Windows.Interactivity.WPF">
       <Version>2.0.20525</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Gitee.VisualStudio.Shared\Gitee.VisualStudio.Shared.csproj">
+      <Project>{c3150b82-8e79-4ff6-a9ff-e361c108384f}</Project>
+      <Name>Gitee.VisualStudio.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
