@@ -75,13 +75,13 @@ namespace Gitee.VisualStudio.Services
             switch (urlType)
             {
                 case GiteeUrlType.CurrentBranch:
-                    return "浏览当前分支" + repository.Head.FriendlyName.Replace("origin/", "");
+                    return "浏览当前分支 " + repository.Head.FriendlyName.Replace("origin/", "");
 
                 case GiteeUrlType.CurrentRevision:
-                    return $"浏览修订{repository.Commits.First().Id.ToString(8)}";
+                    return $"浏览修订 {repository.Commits.First().Id.ToString(8)}";
 
                 case GiteeUrlType.CurrentRevisionFull:
-                    return $"浏览修订({repository.Commits.First().Id.ToString(8)})完整ID";
+                    return $"浏览修订 {repository.Commits.First().Id.ToString(8)} 完整 ID";
 
                 case GiteeUrlType.Blame:
                     return "在线追溯";

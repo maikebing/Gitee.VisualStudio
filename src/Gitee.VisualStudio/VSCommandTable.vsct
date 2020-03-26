@@ -8,7 +8,7 @@
       <Menu guid="guidGitee4VSCmdSet" id="SubMenu" priority="0x1000" type="Menu">
         <Parent guid="guidGitee4VSCmdSet" id="ContextMenuGroup" />
         <Strings>
-          <ButtonText>码云</ButtonText>
+          <ButtonText>Gitee</ButtonText>
         </Strings>
       </Menu>
     </Menus>
@@ -73,14 +73,14 @@
       <Button guid="guidGitee4VSCmdSet" id="OpenFromUrl" priority="0x0700" type="Button">
         <Parent guid="guidGitee4VSCmdSet" id="SubMenuGroup" />
         <Strings>
-          <ButtonText>从码云打开</ButtonText>
+          <ButtonText>从 Gitee 打开</ButtonText>
           <CommandName>OpenFromUrl</CommandName>
         </Strings>
       </Button>
       <Button guid="guidGitee4VSCmdSet" id="OpenWebIDE" priority="0x0800" type="Button">
         <Parent guid="guidGitee4VSCmdSet" id="SubMenuGroup" />
         <Strings>
-          <ButtonText>在WebIDE中打开</ButtonText>
+          <ButtonText>在 WebIDE 中打开</ButtonText>
           <CommandName>CreateSnippet</CommandName>
         </Strings>
       </Button>
