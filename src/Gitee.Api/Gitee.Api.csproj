@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     <PackageProjectUrl>https://gitee.com/GitGroup/Gitee.VisualStudio/tree/master/src/Gitee.Api</PackageProjectUrl>
-    <PackageIconUrl>https://gitee.com/logo_icon.png</PackageIconUrl>
+    <PackageIconUrl></PackageIconUrl>
     <RepositoryUrl>https://gitee.com/GitGroup/Gitee.VisualStudio</RepositoryUrl>
     <PackageLicenseUrl></PackageLicenseUrl>
     <Description>gitee.com 的.Net SDK</Description>
@@ -13,6 +13,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>1.0.2</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIcon>logo.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,6 +33,10 @@
 
   <ItemGroup>
     <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\Gitee.VisualStudio.UI\Resources\images\logo.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

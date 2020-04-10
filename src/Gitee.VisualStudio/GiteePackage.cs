@@ -213,6 +213,7 @@ namespace Gitee.VisualStudio
                     case PackageIds.OpenFromUrl:
                         try
                         {
+                            command.Enabled = false;
                             var match = Regex.Match(Clipboard.GetText(TextDataFormat.Text), "[a-zA-z]+://[^\\s]*");
                             if (match.Success)
                             {

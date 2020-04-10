@@ -29,7 +29,8 @@ namespace Gitee.API.Sandbox
 
                     SDK.client_id = SdkConfig.client_id;
                     SDK.client_secret = SdkConfig.client_secret;
-                    var client = await SDK.LoginAsync(SdkConfig.username, SdkConfig.password);
+                    //var client = await SDK.LoginAsync(SdkConfig.username, SdkConfig.password);
+                    var client  =  SDK.LoginByToken(SdkConfig.Token);
                     var g = await client.CreateGists("test.txt", "test code", "测试代码", true);
                     var g2 = await client.CreateGists("test1.txt", "test code1", "测试代码", false);
 

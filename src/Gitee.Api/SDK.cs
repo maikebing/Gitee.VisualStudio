@@ -138,7 +138,14 @@ namespace Gitee.Api
             _session.Client.BaseUrl = _session.BaseURL;
             return _session;
         }
-
+        public static Session LoginByToken(string token)
+        {
+            var _session = new Session();
+            _session.Token = new TokenDto() { access_token = token };
+            _session.Client = new Client(new HttpClient());
+            _session.Client.BaseUrl = _session.BaseURL;
+            return _session;
+        }
         /// <summary>
         /// 根据缓存的 token信息继续使用， 如果没过期的话
         /// </summary>
