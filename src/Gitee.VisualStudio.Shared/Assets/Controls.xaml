@@ -22,9 +22,9 @@
                    HorizontalOffset="10"
                    PlacementTarget="{Binding ElementName=toolTipCorner}">
                 <!-- Used to reposition Popup when dialog moves or resizes -->
-                <!-- <i:Interaction.Behaviors>
+                <i:Interaction.Behaviors>
                     <behaviors:RepositionPopupBehavior />
-                </i:Interaction.Behaviors> -->
+                </i:Interaction.Behaviors>
                 <Popup.Style>
                     <Style TargetType="{x:Type Popup}">
                         <Style.Triggers>
