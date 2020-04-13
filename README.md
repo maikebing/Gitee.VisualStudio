@@ -2,10 +2,10 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/calues98sxdfnt45?svg=true)](https://ci.appveyor.com/project/MaiKeBing/gitee-visualstudio)
 [![Nuget Version](https://img.shields.io/nuget/v/Gitee.Api.svg)](https://www.nuget.org/packages/Gitee.Api/)
-![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/GiteeInc.GiteeExtension.svg?label=Visual%20Studio%20Marketplace%20Version)
-![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/GiteeInc.GiteeExtension.svg?label=Visual%20Studio%20Marketplace%20Installs)
-![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/GiteeInc.GiteeExtension.svg?label=Visual%20Studio%20Marketplace%20Downloads)
-![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/GiteeInc.GiteeExtension.svg?label=Visual%20Studio%20Marketplace%20Rating)
+![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/GiteeInc.GiteeExtension.svg)
+![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/GiteeInc.GiteeExtension.svg)
+![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/GiteeInc.GiteeExtension.svg)
+![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/GiteeInc.GiteeExtension.svg)
 
 
 提示 Visual Studio  2015,2017,2019 均有社区版，码云的 Visual Studio 扩展支持 2015、2017、2019、的社区版、专业版、企业版。
