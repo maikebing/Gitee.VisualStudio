@@ -3,6 +3,7 @@ using Gitee.VisualStudio.Shared.Helpers;
 using Gitee.VisualStudio.Shared.Helpers.Commands;
 using Microsoft.VisualStudio.Threading;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -31,7 +32,7 @@ namespace Gitee.VisualStudio.UI.ViewModels
             _shell = shell;
             _storage = storage;
             _web = web;
-
+          
             _mediator = mediator;
 
             _loginCommand = new DelegateCommand(OnLogin);
@@ -116,14 +117,23 @@ namespace Gitee.VisualStudio.UI.ViewModels
             BusyContent = Strings.Common_Loading;
 
             var successed = false;
+
+            var message = "";
             Task.Run(async () =>
             {
-                var user = await _web.LoginAsync(Email, Password);
-                if (user != null)
+                try
                 {
-                    successed = true;
+                    var user = await _web.LoginAsync(Email, Password);
+                    if (user != null)
+                    {
+                        successed = true;
 
-                    _storage.SaveUser(user, Password);
+                        _storage.SaveUser(user, Password);
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    message = ex.Message;
                 }
             }).ContinueWith(task =>
             {

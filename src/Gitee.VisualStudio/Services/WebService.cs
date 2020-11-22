@@ -1,4 +1,5 @@
 ﻿using Gitee.Api;
+using Gitee.VisualStudio.Helpers;
 using Gitee.VisualStudio.Shared;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -56,6 +57,7 @@ namespace Gitee.VisualStudio.Services
 
         public async Task<User> LoginAsync(string username, string password)
         {
+
             try
             {
                 var ses = await Gitee.Api.SDK.LoginAsync(username, password);
@@ -63,13 +65,17 @@ namespace Gitee.VisualStudio.Services
                 var user = new Shared.User() { Detail = userdetail, Session = ses, Username = username };
                 return user;
             }
-            catch (WebException ex)
+            catch (WebException we)
             {
-                var res = (HttpWebResponse)ex.Response;
-                var statusCode = (int)res.StatusCode;
-
-                throw new Exception($"错误代码: {statusCode}");
+                OutputWindowHelper.ExceptionWriteLine($"LoginAsync:{we.Message}", we);
+                throw we;
             }
+            catch (Exception ex)
+            {
+                OutputWindowHelper.ExceptionWriteLine($"LoginAsync:{ex.Message}", ex);
+                throw ex;
+            }
+           
         }
 
         public async Task<CreateResult> CreateProjectAsync(string name, string description, bool isPrivate)
@@ -93,9 +99,9 @@ namespace Gitee.VisualStudio.Services
             }
             catch (WebException ex)
             {
+                OutputWindowHelper.ExceptionWriteLine($"LoginAsync:{ex.Message}", ex);
                 var res = (HttpWebResponse)ex.Response;
                 var statusCode = (int)res.StatusCode;
-
                 throw new Exception($"错误代码: {statusCode}");
             }
         }
@@ -130,6 +136,7 @@ namespace Gitee.VisualStudio.Services
                 }
                 catch (Exception ex)
                 {
+                    OutputWindowHelper.ExceptionWriteLine($"LoginAsync:{ex.Message}", ex);
                     result = new CreateSnippetResult()
                     {
                         Success = false,

@@ -31,23 +31,19 @@ namespace Gitee.VisualStudio.Helpers
 
         internal static void DiagnosticWriteLine(string message, Exception ex = null)
         {
-#if DEBUG
             if (ex != null)
             {
                 message += $": {ex}";
             }
             Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             WriteLine("Diagnostic", message);
-#endif
         }
 
         internal static void ExceptionWriteLine(string message, Exception ex)
         {
-#if DEBUG
             Microsoft.VisualStudio.Shell.ThreadHelper.ThrowIfNotOnUIThread();
             var exceptionMessage = $"{message}: {ex}";
             WriteLine("Handled Exception", exceptionMessage);
-#endif
         }
 
         internal static void WarningWriteLine(string message)
