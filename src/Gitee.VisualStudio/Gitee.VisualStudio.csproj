@@ -370,7 +370,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EnvDTE100">
-      <Version>10.0.3</Version>
+      <Version>16.8.30705.32</Version>
     </PackageReference>
     <PackageReference Include="Gitee.Api">
       <Version>1.0.2</Version>
