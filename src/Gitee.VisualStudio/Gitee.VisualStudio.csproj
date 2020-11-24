@@ -409,7 +409,7 @@
       <Version>15.8.209</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VSSDK.BuildTools">
-      <Version>15.1.192</Version>
+      <Version>16.8.3038</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>9.0.1</Version>
