@@ -1,0 +1,34 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "21:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: Microsoft.VSSDK.BuildTools
+    versions:
+    - 16.10.10
+    - 16.10.23
+    - 16.10.7
+    - 16.9.1044
+  - dependency-name: Microsoft.VisualStudio.Threading
+    versions:
+    - 16.8.55
+    - 16.9.54
+  - dependency-name: EnvDTE100
+    versions:
+    - 16.8.30705.32
+  - dependency-name: Microsoft.VisualStudio.ComponentModelHost
+    versions:
+    - 16.8.239
+  - dependency-name: Newtonsoft.Json
+    versions:
+    - 12.0.3
+  - dependency-name: Microsoft.VisualStudio.Shell.Embeddable
+    versions:
+    - 16.8.30705.32
+  - dependency-name: Microsoft.VisualStudio.SDK.Analyzers
+    versions:
+    - 16.7.9
